@@ -242,8 +242,7 @@ jobs:
         )
         if (NOT result EQUAL 0)
           string(REGEX MATCH "FAILED:.*$" error_message "${output}")
-          string(REPLACE "
-" "%0A" error_message "${error_message}")
+          string(REPLACE "\n" "%0A" error_message "${error_message}")
           message("::error::${error_message}")
           message(FATAL_ERROR "Build failed")
         endif()
