@@ -4,7 +4,7 @@ on: [push]
 
 env:
   PLUGIN_NAME: Myplugintest
-  QT_VERSION: 6.7.1
+  QT_VERSION: 6.6.3
   MACOS_DEPLOYMENT_TARGET: 11.7
   QT_CREATOR_VERSION: 14.0.0-rc1
   QT_CREATOR_SNAPSHOT: latest 
