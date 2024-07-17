@@ -10,8 +10,8 @@ jobs:
         uses: cvoegele/action-check-tags-in-another-repo@v1.0.0
         id: check
         with:
-          other-repo-name: qt-creator
-          other-repo-owner: qt-creator
+          other-repo-name: myplugin
+          other-repo-owner: pointhex
     outputs: # propagate output of step to output of job
       matrix: ${{ steps.check.outputs.tags }}
 
