@@ -6,8 +6,8 @@ jobs:
   job_1:
     runs-on: ubuntu-latest
     steps:
-      - name: Check tags in other repository
-        uses: cvoegele/action-check-tags-in-another-repo@v1
+      - name: action-check-tags-in-another-repo
+        uses: cvoegele/action-check-tags-in-another-repo@v1.0.0
         id: check
         with:
           other-repo-name: qt-creator
