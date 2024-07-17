@@ -1,0 +1,29 @@
+name: Check QtCreator releases
+
+on: [push]
+
+jobs:
+  job_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check tags in other repository
+        uses: cvoegele/action-check-tags-in-another-repo@v1
+        id: check
+        with:
+          other-repo-name: qt-creator
+          other-repo-owner: qt-creator
+    outputs: # propagate output of step to output of job
+      matrix: ${{ steps.check.outputs.tags }}
+
+  job_2:
+    needs: job_1
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tag: ${{ fromJson(needs.job_1.outputs.matrix) }} # parse output of job to matrix input
+
+    steps:
+      - name: Step0
+        run: |
+          echo from ${{ matrix.tag }}
