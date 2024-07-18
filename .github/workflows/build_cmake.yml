@@ -340,6 +340,7 @@ jobs:
   update-json:
     name: Update JSON File
     runs-on: ubuntu-latest
+    needs: publish
 
     steps:
     - name: Fetch release assets
