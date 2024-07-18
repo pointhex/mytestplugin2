@@ -279,6 +279,9 @@ jobs:
       run: |
         echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
 
+    - name: Display upload_url
+      run: cat ./upload_url
+
     - uses: actions/upload-artifact@v3
       with:
         path: ./upload_url
