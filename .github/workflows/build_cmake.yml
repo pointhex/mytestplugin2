@@ -258,7 +258,7 @@ jobs:
         name: ${{ env.PLUGIN_NAME}}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
 
   release:
-    if: contains(github.ref, 'tags/v')
+    # if': contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
     permissions: write-all
     needs: build
@@ -288,7 +288,7 @@ jobs:
         name: upload_url
 
   publish:
-    if: contains(github.ref, 'tags/v')
+    # if': contains(github.ref, 'tags/v')
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -337,6 +337,11 @@ jobs:
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
         asset_content_type: application/x-7z-compressed
 
+  update-json:
+    name: Update JSON File
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Fetch release assets
       id: fetch_assets
       env:
