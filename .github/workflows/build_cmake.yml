@@ -368,7 +368,7 @@ jobs:
         node-version: '18'
 
     - name: Run the Node.js script to update JSON
-      run: node modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
+      run: node ./modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
 
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v2
