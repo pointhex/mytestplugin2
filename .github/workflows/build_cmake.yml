@@ -363,9 +363,9 @@ jobs:
         echo "LINUX_URL=${LINUX_URL}" >> $GITHUB_ENV
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
-        node-version: '14'
+        node-version: '18'
 
     - name: Run the Node.js script to update JSON
       run: node modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
