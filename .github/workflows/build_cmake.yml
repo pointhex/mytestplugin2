@@ -336,3 +336,42 @@ jobs:
         asset_path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
         asset_content_type: application/x-7z-compressed
+
+    - name: Fetch release assets
+      id: fetch_assets
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        release_id=$(echo "${{ steps.set_upload_url.outputs.upload_url }}" | sed 's/.*\/releases\/\([0-9]*\)\/assets.*/\1/')
+        assets=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+                      -H "Accept: application/vnd.github.v3+json" \
+                      https://api.github.com/repos/${{ github.repository }}/releases/$release_id/assets)
+        echo "$assets" > assets.json
+        echo "::set-output name=assets::$assets"
+
+    - name: Parse asset URLs
+      id: parse_urls
+      run: |
+        cat assets.json | jq -r '.[] | "\(.name): \(.browser_download_url)"' > asset_urls.txt
+        cat asset_urls.txt
+
+    - name: Set URLs for the script
+      run: |
+        WINDOWS_URL=$(grep "windows_artifact_url" asset_urls.txt | cut -d':' -f2 | tr -d ' ')
+        LINUX_URL=$(grep "linux_artifact_url" asset_urls.txt | cut -d':' -f2 | tr -d ' ')
+        echo "WINDOWS_URL=${WINDOWS_URL}" >> $GITHUB_ENV
+        echo "LINUX_URL=${LINUX_URL}" >> $GITHUB_ENV
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Run the Node.js script to update JSON
+      run: node modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
+
+    - name: Upload the modified JSON file as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: updated-json
+        path: data.json
