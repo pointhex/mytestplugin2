@@ -317,7 +317,7 @@ jobs:
         -H 'accept: application/json' \
         -H 'Authorization: Bearer ${{ secrets.TOKEN }}' \
         -H 'Content-Type: application/json' \
-        -d './data.json'
+        -d ./data.json
 
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v3
