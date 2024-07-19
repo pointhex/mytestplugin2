@@ -349,12 +349,17 @@ jobs:
     steps:
       - name: Set URLs for the script
         run: |
-          echo "WINDOWS_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-"Windows-x64.7z" >> $GITHUB_ENV
-          echo "LINUX_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-"Linux-x64.7z" >> $GITHUB_ENV
-          echo "MACOS_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-"macOS-x64.7z" >> $GITHUB_ENV
+          echo "WINDOWS_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-Windows-x64.7z" >> $GITHUB_ENV
+          echo "LINUX_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-Linux-x64.7z" >> $GITHUB_ENV
+          echo "MACOS_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-macOS-x64.7z" >> $GITHUB_ENV
       
       - name: Run the Node.js script to update JSON
         run: node modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
       - name: Upload the modified JSON file as an artifact
         uses: actions/upload-artifact@v2
