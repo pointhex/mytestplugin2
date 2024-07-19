@@ -291,6 +291,10 @@ jobs:
       run: |
         echo "RELEASE_HTML_URL=${{ steps.create_release.outputs.html_url }}/" >> $GITHUB_ENV
 
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
     - name: Set URLs for the script
       run: |
         echo "WINDOWS_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-Windows-x64.7z" >> $GITHUB_ENV
