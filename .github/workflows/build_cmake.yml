@@ -258,7 +258,7 @@ jobs:
         name: ${{ env.PLUGIN_NAME}}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
 
   release:
-    # if': contains(github.ref, 'tags/v')
+    if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
     permissions: write-all
     needs: build
@@ -288,7 +288,7 @@ jobs:
         name: upload_url
 
   publish:
-    # if': contains(github.ref, 'tags/v')
+    if: contains(github.ref, 'tags/v')
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -338,46 +338,60 @@ jobs:
         asset_content_type: application/x-7z-compressed
 
   update-json:
-    name: Update JSON File
+    name: Update JSON File for plugin
     runs-on: ubuntu-latest
     needs: publish
 
     steps:
-    - name: Fetch release assets
-      id: fetch_assets
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        release_id=$(echo "${{ steps.set_upload_url.outputs.upload_url }}" | sed 's/.*\/releases\/\([0-9]*\)\/assets.*/\1/')
-        assets=$(curl -H "Authorization: token $GITHUB_TOKEN" \
-                      -H "Accept: application/vnd.github.v3+json" \
-                      https://api.github.com/repos/${{ github.repository }}/releases/$release_id/assets)
-        echo "$assets" > assets.json
-        echo "::set-output name=assets::$assets"
+      - name: Set URLs for the script
+        run: |
+          echo "WINDOWS_URL=${{ steps.create_release.outputs.html_url }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-"Windows-x64.7z" >> $GITHUB_ENV
+          echo "LINUX_URL=${{ steps.create_release.outputs.html_url }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-"Linux-x64.7z" >> $GITHUB_ENV
+      
+      - name: Run the Node.js script to update JSON
+        run: node ./modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
 
-    - name: Parse asset URLs
-      id: parse_urls
-      run: |
-        cat assets.json | jq -r '.[] | "\(.name): \(.browser_download_url)"' > asset_urls.txt
-        cat asset_urls.txt
+      - name: Upload the modified JSON file as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: updated-json
+          path: data.json
 
-    - name: Set URLs for the script
-      run: |
-        WINDOWS_URL=$(grep "windows_artifact_url" asset_urls.txt | cut -d':' -f2 | tr -d ' ')
-        LINUX_URL=$(grep "linux_artifact_url" asset_urls.txt | cut -d':' -f2 | tr -d ' ')
-        echo "WINDOWS_URL=${WINDOWS_URL}" >> $GITHUB_ENV
-        echo "LINUX_URL=${LINUX_URL}" >> $GITHUB_ENV
+    # - name: Fetch release assets
+    #   id: fetch_assets
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   run: |
+    #     release_id=$(echo "${{ steps.set_upload_url.outputs.upload_url }}" | sed 's/.*\/releases\/\([0-9]*\)\/assets.*/\1/')
+    #     assets=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+    #                   -H "Accept: application/vnd.github.v3+json" \
+    #                   https://api.github.com/repos/${{ github.repository }}/releases/$release_id/assets)
+    #     echo "$assets" > assets.json
+    #     echo "::set-output name=assets::$assets"
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
+    # - name: Parse asset URLs
+    #   id: parse_urls
+    #   run: |
+    #     cat assets.json | jq -r '.[] | "\(.name): \(.browser_download_url)"' > asset_urls.txt
+    #     cat asset_urls.txt
 
-    - name: Run the Node.js script to update JSON
-      run: node ./modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
+    # - name: Set URLs for the script
+    #   run: |
+    #     WINDOWS_URL=$(grep "windows_artifact_url" asset_urls.txt | cut -d':' -f2 | tr -d ' ')
+    #     LINUX_URL=$(grep "linux_artifact_url" asset_urls.txt | cut -d':' -f2 | tr -d ' ')
+    #     echo "WINDOWS_URL=${WINDOWS_URL}" >> $GITHUB_ENV
+    #     echo "LINUX_URL=${LINUX_URL}" >> $GITHUB_ENV
 
-    - name: Upload the modified JSON file as an artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: updated-json
-        path: data.json
+    # - name: Set up Node.js
+    #   uses: actions/setup-node@v4
+    #   with:
+    #     node-version: '18'
+
+    # - name: Run the Node.js script to update JSON
+    #   run: node ./modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
+
+    # - name: Upload the modified JSON file as an artifact
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: updated-json
+    #     path: data.json
