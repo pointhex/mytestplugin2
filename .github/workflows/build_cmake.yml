@@ -269,6 +269,7 @@ jobs:
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        QT_TOKEN: ${{ secrets.TOKEN }}
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
@@ -311,13 +312,11 @@ jobs:
       run: node modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
 
     - name: Upload the json to server
-      env:
-        QT_TOKEN: ${{ secrets.TOKEN }}
       run: |
         curl --request PUT \
         --url "https://qtc-ext-service-admin-f7f4df4396d3.herokuapp.com/api/v1/admin/extensions/076c18b3-ce6a-4e70-ac12-9426936adc7f" \
         --header "accept: application/json" \
-        --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1HTHFqOThWTkxvWGFGZnBKQ0JwZ0I0SmFLcyJ9.eyJhdWQiOiI1ODg3YWZlZC00YWZlLTQyNDItOTBhZS0xYTUyNmVkYWFhZmQiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vMjBkMGIxNjctNzk0ZC00NDhhLTlkMDEtYWFlY2NjMTEyNGFjL3YyLjAiLCJpYXQiOjE3MjE0MDQ4NDcsIm5iZiI6MTcyMTQwNDg0NywiZXhwIjoxNzIxNDA4NzQ3LCJhaW8iOiJFMmNBZ2xQZkgwOTVwTGRMZmZ1N3ozODBaNjZ0NUxsVGFCenBhY3ZFV0JIL3BXSXVCd0E9IiwiYXpwIjoiNTg4N2FmZWQtNGFmZS00MjQyLTkwYWUtMWE1MjZlZGFhYWZkIiwiYXpwYWNyIjoiMSIsIm9pZCI6ImJmYTYzM2ZlLWViOGUtNDY3YS1hYjU1LTk0NzcwYzYxZjA3NSIsInJoIjoiMC5BWGtBWjdIUUlFMTVpa1NkQWFyc3pCRWtyTzJ2aDFqLVNrSkNrSzRhVW03YXF2ME1BUUEuIiwic3ViIjoiYmZhNjMzZmUtZWI4ZS00NjdhLWFiNTUtOTQ3NzBjNjFmMDc1IiwidGlkIjoiMjBkMGIxNjctNzk0ZC00NDhhLTlkMDEtYWFlY2NjMTEyNGFjIiwidXRpIjoidmVQMEJOX0hWMG02a3Vpd0FnQTVBQSIsInZlciI6IjIuMCJ9.Dj9LYe6z_51q4uV9FHN07r5ZrZI8BYF2Yl9r2CgA3MvgGLfWKlTmPs8N9Exb-YNCiTUIFgS68xO0Lp6g2lq3BBuZRTT5uZwM2GUFRE-FAs997Ic44gq4VAwIGZy68ilLsqMeOJBDqj0xEHTJpLah5A5H3PZUFHtvxWKN_p6_xCuxI-MNDia1r1jD8sI-ij2ZiMV17oVYU3eZcgdwodALNsy2nz7YrhgJoQjao16YQeKZDl-RxdcdzsApfKBtksHknNt2M43Mw2iUbhNTNJgZ0h6cnxsfNgXQx9nAmn_ymATlBc7Tknfax9GQKa3FaTVhBKCTVssC_uhnQnO0d67jug" \
+        --header "Authorization: Bearer $QT_TOKEN" \
         --header "Content-Type: application/json" \
         -d @data.json
 
