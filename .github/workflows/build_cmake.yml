@@ -311,11 +311,13 @@ jobs:
       run: node modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
 
     - name: Upload the json to server
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
       run: |
         curl -X 'PUT' \
         'https://qtc-ext-service-admin-f7f4df4396d3.herokuapp.com/api/v1/admin/extensions/076c18b3-ce6a-4e70-ac12-9426936adc7f' \
         -H 'accept: application/json' \
-        -H 'Authorization: Bearer ${{ secrets.TOKEN }}' \
+        -H 'Authorization: Bearer ${{ env.TOKEN }}' \
         -H 'Content-Type: application/json' \
         -d @data.json
 
