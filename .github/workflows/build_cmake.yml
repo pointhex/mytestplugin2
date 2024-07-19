@@ -289,7 +289,8 @@ jobs:
 
     - name: Store Release html_url
       run: |
-        echo "RELEASE_HTML_URL=${{ steps.create_release.outputs.html_url }}/" >> $GITHUB_ENV
+        RELEASE_HTML_URL=$(echo "${{ steps.create_release.outputs.html_url }}" | sed 's/tag/download/')
+        echo "RELEASE_HTML_URL=${RELEASE_HTML_URL}" >> $GITHUB_ENV
 
 
     - name: Checkout repository
@@ -297,9 +298,9 @@ jobs:
 
     - name: Set URLs for the script
       run: |
-        echo "WINDOWS_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-Windows-x64.7z" >> $GITHUB_ENV
-        echo "LINUX_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-Linux-x64.7z" >> $GITHUB_ENV
-        echo "MACOS_URL=${{ env.RELEASE_HTML_URL }}-${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-macOS-x64.7z" >> $GITHUB_ENV
+        echo "WINDOWS_URL=${{ env.RELEASE_HTML_URL }}${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-Windows-x64.7z" >> $GITHUB_ENV
+        echo "LINUX_URL=${{ env.RELEASE_HTML_URL }}${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-Linux-x64.7z" >> $GITHUB_ENV
+        echo "MACOS_URL=${{ env.RELEASE_HTML_URL }}${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-macOS-x64.7z" >> $GITHUB_ENV
     
     - name: Set up Node.js
       uses: actions/setup-node@v4
@@ -308,6 +309,15 @@ jobs:
 
     - name: Run the Node.js script to update JSON
       run: node modifyJson.js ${{ env.WINDOWS_URL }} ${{ env.LINUX_URL }}
+
+    - name: Upload the json to server
+      run: |
+        curl -X 'PUT' \
+        'https://qtc-ext-service-admin-f7f4df4396d3.herokuapp.com/api/v1/admin/extensions/076c18b3-ce6a-4e70-ac12-9426936adc7f' \
+        -H 'accept: application/json' \
+        -H 'Authorization: Bearer ${{ secrets.TOKEN }}' \
+        -H 'Content-Type: application/json' \
+        -d './data.json'
 
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v3
