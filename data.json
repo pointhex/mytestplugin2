@@ -1,6 +1,6 @@
 {
-  "name": "test2",
-  "vendor": "The Qt Company",
+  "name": "Myplugintest",
+  "vendor": "MyCompany",
   "tags": [
     "Some tag",
     "Other tag"
@@ -12,8 +12,8 @@
     "Linux"
   ],
   "license": "os",
-  "copyright": "(C) 2023 The Qt Company Ltd",
-  "version": "12.0.1",
+  "copyright": "(C) MyCompany",
+  "version": "0.0.1",
   "version_history": [
     {
       "version": "1.0.0",
@@ -32,15 +32,9 @@
   "small_icon": "https://url/to/small-icon-image",
   "description_paragraphs": [
     {
-      "header": "First header",
+      "header": "Description",
       "text": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempor, lectus quis dignissim facilisis, nisl elit ultrices nulla, ut commodo lacus odio eu dolor. Suspendisse potenti. In sollicitudin a odio in rutrum. Suspendisse potenti. Donec dapibus dui sit amet molestie sollicitudin."
-      ]
-    },
-    {
-      "header": "Second header",
-      "text": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempor, lectus quis dignissim facilisis, nisl elit ultrices nulla, ut commodo lacus odio eu dolor. Suspendisse potenti. In sollicitudin a odio in rutrum. Suspendisse potenti. Donec dapibus dui sit amet molestie sollicitudin."
+        "Put a short description of your plugin here"
       ]
     }
   ],
@@ -73,13 +67,13 @@
     {
       "set_id": null,
       "status": "published",
-      "core_compat_version_major": 14,
+      "core_compat_version_major": 15,
       "core_compat_version_minor": 0,
-      "core_compat_version_patch": 0,
+      "core_compat_version_patch": 2,
       "core_compat_version_qualifier": 0,
-      "core_version_major": 14,
+      "core_version_major": 15,
       "core_version_minor": 0,
-      "core_version_patch": 82,
+      "core_version_patch": 2,
       "core_version_qualifier": 0,
       "host_os": "Windows",
       "host_os_version_major": 10,
@@ -88,12 +82,12 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "windows_url_value",
+          "url": "https://smth.com/Myplugintest-15.0.2-beta1-Windows-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
-            "CompatVersion": "14.0.0",
-            "Copyright": "(C) 2023 The Qt Company Ltd",
+            "CompatVersion": "0.0.1",
+            "Copyright": "(C) MyCompany",
             "Dependencies": [
               {
                 "Name": "Core",
@@ -104,20 +98,14 @@
                 "Version": "14.0.0"
               }
             ],
-            "Description": "Example plugin.",
+            "Description": "Put a short description of your plugin here",
             "License": [
-              "Commercial Usage",
-              "",
-              "Licensees holding valid Qt Commercial licenses may use this plugin in accordance with the Qt Commercial License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and The Qt Company.",
-              "",
-              "GNU General Public License Usage",
-              "",
-              "Alternatively, this plugin may be used under the terms of the GNU General Public License version 3 as published by the Free Software Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT included in the packaging of this plugin. Please review the following information to ensure the GNU General Public License requirements will be met: https://www.gnu.org/licenses/gpl-3.0.html."
+              "Put short license information here"
             ],
-            "Name": "ExamplePlugin",
-            "Url": "http://www.qt.io",
-            "Vendor": "The Qt Company Ltd",
-            "Version": "14.0.0"
+            "Name": "Myplugintest",
+            "Url": "https://www.mycompany.com",
+            "Vendor": "MyCompany",
+            "Version": "0.0.1"
           },
           "dependencies": [
             {
@@ -156,13 +144,13 @@
     {
       "set_id": null,
       "status": "published",
-      "core_compat_version_major": 14,
+      "core_compat_version_major": 15,
       "core_compat_version_minor": 0,
-      "core_compat_version_patch": 0,
+      "core_compat_version_patch": 2,
       "core_compat_version_qualifier": 0,
-      "core_version_major": 14,
+      "core_version_major": 15,
       "core_version_minor": 0,
-      "core_version_patch": 82,
+      "core_version_patch": 2,
       "core_version_qualifier": 0,
       "host_os": "Linux",
       "host_os_version_major": 22,
@@ -171,12 +159,12 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "linux_url_value",
+          "url": "https://smth.com/Myplugintest-15.0.2-beta1-Linux-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
-            "CompatVersion": "14.0.0",
-            "Copyright": "(C) 2023 The Qt Company Ltd",
+            "CompatVersion": "0.0.1",
+            "Copyright": "(C) MyCompany",
             "Dependencies": [
               {
                 "Name": "Core",
@@ -187,20 +175,91 @@
                 "Version": "14.0.0"
               }
             ],
-            "Description": "Example plugin.",
+            "Description": "Put a short description of your plugin here",
             "License": [
-              "Commercial Usage",
-              "",
-              "Licensees holding valid Qt Commercial licenses may use this plugin in accordance with the Qt Commercial License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and The Qt Company.",
-              "",
-              "GNU General Public License Usage",
-              "",
-              "Alternatively, this plugin may be used under the terms of the GNU General Public License version 3 as published by the Free Software Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT included in the packaging of this plugin. Please review the following information to ensure the GNU General Public License requirements will be met: https://www.gnu.org/licenses/gpl-3.0.html."
+              "Put short license information here"
             ],
-            "Name": "ExamplePlugin",
-            "Url": "http://www.qt.io",
-            "Vendor": "The Qt Company Ltd",
-            "Version": "14.0.0"
+            "Name": "Myplugintest",
+            "Url": "https://www.mycompany.com",
+            "Vendor": "MyCompany",
+            "Version": "0.0.1"
+          },
+          "dependencies": [
+            {
+              "url": "https://github.com/pointhex/mytestplugin2/releases/download/v1.0.1/Myplugintest-15.0.0-beta1-Linux-x64.7z",
+              "size": 5000,
+              "meta_data": {
+                "Category": "Core",
+                "CompatVersion": "14.0.0",
+                "Copyright": "(C) 2023 The Qt Company Ltd",
+                "Dependencies": [
+                  {
+                    "Name": "Core",
+                    "Version": "14.0.0"
+                  }
+                ],
+                "Description": "Example dependency.",
+                "License": [
+                  "Commercial Usage",
+                  "",
+                  "Licensees holding valid Qt Commercial licenses may use this plugin in accordance with the Qt Commercial License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and The Qt Company.",
+                  "",
+                  "GNU General Public License Usage",
+                  "",
+                  "Alternatively, this plugin may be used under the terms of the GNU General Public License version 3 as published by the Free Software Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT included in the packaging of this plugin. Please review the following information to ensure the GNU General Public License requirements will be met: https://www.gnu.org/licenses/gpl-3.0.html."
+                ],
+                "Name": "ExampleDependency",
+                "Url": "http://www.qt.io",
+                "Vendor": "The Qt Company Ltd",
+                "Version": "14.0.0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "set_id": null,
+      "status": "published",
+      "core_compat_version_major": 15,
+      "core_compat_version_minor": 0,
+      "core_compat_version_patch": 2,
+      "core_compat_version_qualifier": 0,
+      "core_version_major": 15,
+      "core_version_minor": 0,
+      "core_version_patch": 2,
+      "core_version_qualifier": 0,
+      "host_os": "macOS",
+      "host_os_version_major": 11,
+      "host_os_version_minor": 0,
+      "host_os_version_patch": 0,
+      "host_os_architecture": "x86_64",
+      "plugins": [
+        {
+          "url": "https://smth.com/Myplugintest-15.0.2-beta1-macOS-x64.7z",
+          "size": 5000,
+          "meta_data": {
+            "Category": "Core",
+            "CompatVersion": "0.0.1",
+            "Copyright": "(C) MyCompany",
+            "Dependencies": [
+              {
+                "Name": "Core",
+                "Version": "14.0.0"
+              },
+              {
+                "Name": "ExampleDependency",
+                "Version": "14.0.0"
+              }
+            ],
+            "Description": "Put a short description of your plugin here",
+            "License": [
+              "Put short license information here"
+            ],
+            "Name": "Myplugintest",
+            "Url": "https://www.mycompany.com",
+            "Vendor": "MyCompany",
+            "Version": "0.0.1"
           },
           "dependencies": [
             {
