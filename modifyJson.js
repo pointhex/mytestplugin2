@@ -59,7 +59,7 @@ mainData.plugin_sets.forEach(set => {
 
   set.core_version_major = parseInt(QT_CREATOR_VERSION.split('.')[0]);
   set.core_version_minor = parseInt(QT_CREATOR_VERSION.split('.')[1]);
-  set.core_version_patch = parseInt(QT_CREATOR_VERSION.split('.')[2]);
+  set.core_version_patch = parseInt(QT_CREATOR_VERSION.split('.')[2]) + 1;
 
   if (set.host_os === 'Windows') {
     set.plugins.forEach(plugin => {
