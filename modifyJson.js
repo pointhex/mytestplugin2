@@ -5,7 +5,8 @@ const path = require('path');
 const HTML_URL = process.env.HTML_URL || process.argv[2];
 const PLUGIN_NAME = process.env.PLUGIN_NAME || process.argv[3];
 const QT_CREATOR_VERSION = process.env.QT_CREATOR_VERSION || process.argv[4];
-const TOKEN = process.env.TOKEN || process.argv[5];
+const QT_CREATOR_VERSION_INTERNAL = process.env.QT_CREATOR_VERSION_INTERNAL || process.argv[5];
+const TOKEN = process.env.TOKEN || process.argv[6];
 
 // Read the main JSON files
 const mainFilePath = path.join(__dirname, 'data.json');
@@ -37,7 +38,7 @@ const updatePluginMetadata = (plugin, pluginData) => {
 
   plugin.meta_data.Dependencies.forEach(dependency => {
     if (dependency.Name === 'Core') {
-      dependency.Version = QT_CREATOR_VERSION.split('-')[0];
+      dependency.Version = QT_CREATOR_VERSION_INTERNAL.split('-')[0];
     }
   });
 };
@@ -59,14 +60,14 @@ mainData.description_paragraphs = [
 
 // Update the plugin_sets URLs, versions, and metadata
 mainData.plugin_sets.forEach(set => {
-  set.core_compat_version_major = parseInt(QT_CREATOR_VERSION.split('.')[0]);
-  set.core_compat_version_minor = parseInt(QT_CREATOR_VERSION.split('.')[1]);
-  set.core_compat_version_patch = parseInt(QT_CREATOR_VERSION.split('.')[2]);
+  set.core_compat_version_major = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[0]);
+  set.core_compat_version_minor = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[1]);
+  set.core_compat_version_patch = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[2]);
   set.core_compat_version_qualifier = 0;
 
-  set.core_version_major = parseInt(QT_CREATOR_VERSION.split('.')[0]);
-  set.core_version_minor = parseInt(QT_CREATOR_VERSION.split('.')[1]);
-  set.core_version_patch = parseInt(QT_CREATOR_VERSION.split('.')[2]);
+  set.core_version_major = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[0]);
+  set.core_version_minor = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[1]);
+  set.core_version_patch = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[2]);
 
   if (set.host_os === 'Windows') {
     set.plugins.forEach(plugin => {
