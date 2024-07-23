@@ -5,6 +5,7 @@ const path = require('path');
 const HTML_URL = process.env.HTML_URL || process.argv[2];
 const PLUGIN_NAME = process.env.PLUGIN_NAME || process.argv[3];
 const QT_CREATOR_VERSION = process.env.QT_CREATOR_VERSION || process.argv[4];
+const TOKEN = process.env.TOKEN || process.argv[5];
 
 // Read the main JSON files
 const mainFilePath = path.join(__dirname, 'data.json');
@@ -87,5 +88,76 @@ mainData.plugin_sets.forEach(set => {
 
 // Save the updated JSON file
 fs.writeFileSync(mainFilePath, JSON.stringify(mainData, null, 2), 'utf8');
+
+const makeGetRequest = async (url, token) => {
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'accept': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
+// Function to make a PUT request
+const makePutRequest = async (url, data, token) => {
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    console.error('PUT Request Error Response:', errorResponse); // Log the error response    
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
+const makePostRequest = async (url, data, token) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
+const url = `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions?search=${PLUGIN_NAME}`;
+makeGetRequest(url, TOKEN)
+.then(response => {
+    if (response.items.length > 0 && response.items[0].extension_id !== '') {
+      const pluginId = response.items[0].extension_id;
+      makePutRequest(
+        `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions/${pluginId}`, mainData, TOKEN)
+      .catch(error => console.error('Error:', error));
+    } else {
+      makePostRequest(
+        'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions', mainData, TOKEN)
+      .catch(error => console.error('Error:', error));
+    }
+  })
+  .catch(error => console.error('Error:', error));
 
 console.log('JSON file updated successfully');
