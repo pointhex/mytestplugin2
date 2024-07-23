@@ -73,7 +73,7 @@
       "core_compat_version_qualifier": 0,
       "core_version_major": 15,
       "core_version_minor": 0,
-      "core_version_patch": 1,
+      "core_version_patch": 0,
       "core_version_qualifier": 0,
       "host_os": "Windows",
       "host_os_version_major": 10,
@@ -82,7 +82,7 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-Windows-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-Windows-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
@@ -99,7 +99,7 @@
             "Dependencies": [
               {
                 "Name": "Core",
-                "Version": "15.0.0-beta1"
+                "Version": "15.0.0"
               }
             ]
           },
@@ -116,7 +116,7 @@
       "core_compat_version_qualifier": 0,
       "core_version_major": 15,
       "core_version_minor": 0,
-      "core_version_patch": 1,
+      "core_version_patch": 0,
       "core_version_qualifier": 0,
       "host_os": "Linux",
       "host_os_version_major": 22,
@@ -125,7 +125,7 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-Linux-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-Linux-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
@@ -142,7 +142,7 @@
             "Dependencies": [
               {
                 "Name": "Core",
-                "Version": "15.0.0-beta1"
+                "Version": "15.0.0"
               }
             ]
           },
@@ -159,7 +159,7 @@
       "core_compat_version_qualifier": 0,
       "core_version_major": 15,
       "core_version_minor": 0,
-      "core_version_patch": 1,
+      "core_version_patch": 0,
       "core_version_qualifier": 0,
       "host_os": "macOS",
       "host_os_version_major": 11,
@@ -168,7 +168,7 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-macOS-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-macOS-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
@@ -185,7 +185,7 @@
             "Dependencies": [
               {
                 "Name": "Core",
-                "Version": "15.0.0-beta1"
+                "Version": "15.0.0"
               }
             ]
           },
