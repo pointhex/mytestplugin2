@@ -7,6 +7,7 @@ env:
   QT_VERSION: 6.6.3
   MACOS_DEPLOYMENT_TARGET: 11.7
   QT_CREATOR_VERSION: 15.0.0-beta1
+  QT_CREATOR_VERSION_INTERNAL: 14.0.82
   QT_CREATOR_SNAPSHOT: latest 
   CMAKE_VERSION: 3.21.1
   NINJA_VERSION: 1.10.1
@@ -304,19 +305,7 @@ jobs:
     - name: Run the Node.js script to update JSON
       env:
         QT_TOKEN: ${{ secrets.TOKEN }}
-      run: node modifyJson.js ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} ${{ env.QT_CREATOR_VERSION }} ${{ env.QT_TOKEN }}
-
-    # - name: Upload the json to server
-    #   env:
-    #     QT_TOKEN: ${{ secrets.TOKEN }}
-    #     # --url "https://qtc-ext-service-admin-f7f4df4396d3.herokuapp.com/api/v1/admin/extensions/076c18b3-ce6a-4e70-ac12-9426936adc7f" \
-    #   run: |
-    #     curl --request PUT \
-    #     --url "https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions/cd2aaad5-c4ef-43eb-87bf-8b05b6132ee0" \
-    #     --header "accept: application/json" \
-    #     --header "Authorization: Bearer $QT_TOKEN" \
-    #     --header "Content-Type: application/json" \
-    #     -d @data.json
+      run: node modifyJson.js ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} ${{ env.QT_CREATOR_VERSION_INTERNAL }} ${{ env.QT_TOKEN }}
 
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v3
