@@ -33,6 +33,12 @@ const updatePluginMetadata = (plugin, pluginData) => {
   plugin.meta_data.License = [pluginData.License];
   plugin.meta_data.Description = pluginData.Description;
   plugin.meta_data.Url = pluginData.Url;
+
+  plugin.meta_data.Dependencies.forEach(dependency => {
+    if (dependency.Name === 'Core') {
+      dependency.Version = QT_CREATOR_VERSION;
+    }
+  });
 };
 
 // Update the global data in mainData

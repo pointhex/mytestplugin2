@@ -82,62 +82,28 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.28/Myplugintest-15.0.0-beta1-Windows-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-Windows-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
+            "Version": "0.0.1",
             "CompatVersion": "0.0.1",
             "Copyright": "(C) MyCompany",
-            "Dependencies": [
-              {
-                "Name": "Core",
-                "Version": "14.0.0"
-              },
-              {
-                "Name": "ExampleDependency",
-                "Version": "14.0.0"
-              }
-            ],
+            "Name": "Myplugintest",
+            "Url": "https://www.mycompany.com",
+            "Vendor": "MyCompany",
             "Description": "Put a short description of your plugin here",
             "License": [
               "Put short license information here"
             ],
-            "Name": "Myplugintest",
-            "Url": "https://www.mycompany.com",
-            "Vendor": "MyCompany",
-            "Version": "0.0.1"
-          },
-          "dependencies": [
-            {
-              "url": "https://github.com/pointhex/mytestplugin2/releases/download/v1.0.1/Myplugintest-15.0.0-beta1-Linux-x64.7z",
-              "size": 5000,
-              "meta_data": {
-                "Category": "Core",
-                "CompatVersion": "14.0.0",
-                "Copyright": "(C) 2023 The Qt Company Ltd",
-                "Dependencies": [
-                  {
-                    "Name": "Core",
-                    "Version": "14.0.0"
-                  }
-                ],
-                "Description": "Example dependency.",
-                "License": [
-                  "Commercial Usage",
-                  "",
-                  "Licensees holding valid Qt Commercial licenses may use this plugin in accordance with the Qt Commercial License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and The Qt Company.",
-                  "",
-                  "GNU General Public License Usage",
-                  "",
-                  "Alternatively, this plugin may be used under the terms of the GNU General Public License version 3 as published by the Free Software Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT included in the packaging of this plugin. Please review the following information to ensure the GNU General Public License requirements will be met: https://www.gnu.org/licenses/gpl-3.0.html."
-                ],
-                "Name": "ExampleDependency",
-                "Url": "http://www.qt.io",
-                "Vendor": "The Qt Company Ltd",
-                "Version": "14.0.0"
+            "Dependencies": [
+              {
+                "Name": "Core",
+                "Version": "15.0.0-beta1"
               }
-            }
-          ]
+            ]
+          },
+          "dependencies": []
         }
       ]
     },
@@ -159,62 +125,28 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.28/Myplugintest-15.0.0-beta1-Linux-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-Linux-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
+            "Version": "0.0.1",
             "CompatVersion": "0.0.1",
             "Copyright": "(C) MyCompany",
-            "Dependencies": [
-              {
-                "Name": "Core",
-                "Version": "14.0.0"
-              },
-              {
-                "Name": "ExampleDependency",
-                "Version": "14.0.0"
-              }
-            ],
+            "Name": "Myplugintest",
+            "Url": "https://www.mycompany.com",
+            "Vendor": "MyCompany",
             "Description": "Put a short description of your plugin here",
             "License": [
               "Put short license information here"
             ],
-            "Name": "Myplugintest",
-            "Url": "https://www.mycompany.com",
-            "Vendor": "MyCompany",
-            "Version": "0.0.1"
-          },
-          "dependencies": [
-            {
-              "url": "https://github.com/pointhex/mytestplugin2/releases/download/v1.0.1/Myplugintest-15.0.0-beta1-Linux-x64.7z",
-              "size": 5000,
-              "meta_data": {
-                "Category": "Core",
-                "CompatVersion": "14.0.0",
-                "Copyright": "(C) 2023 The Qt Company Ltd",
-                "Dependencies": [
-                  {
-                    "Name": "Core",
-                    "Version": "14.0.0"
-                  }
-                ],
-                "Description": "Example dependency.",
-                "License": [
-                  "Commercial Usage",
-                  "",
-                  "Licensees holding valid Qt Commercial licenses may use this plugin in accordance with the Qt Commercial License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and The Qt Company.",
-                  "",
-                  "GNU General Public License Usage",
-                  "",
-                  "Alternatively, this plugin may be used under the terms of the GNU General Public License version 3 as published by the Free Software Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT included in the packaging of this plugin. Please review the following information to ensure the GNU General Public License requirements will be met: https://www.gnu.org/licenses/gpl-3.0.html."
-                ],
-                "Name": "ExampleDependency",
-                "Url": "http://www.qt.io",
-                "Vendor": "The Qt Company Ltd",
-                "Version": "14.0.0"
+            "Dependencies": [
+              {
+                "Name": "Core",
+                "Version": "15.0.0-beta1"
               }
-            }
-          ]
+            ]
+          },
+          "dependencies": []
         }
       ]
     },
@@ -236,62 +168,28 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.28/Myplugintest-15.0.0-beta1-macOS-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-macOS-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
+            "Version": "0.0.1",
             "CompatVersion": "0.0.1",
             "Copyright": "(C) MyCompany",
-            "Dependencies": [
-              {
-                "Name": "Core",
-                "Version": "14.0.0"
-              },
-              {
-                "Name": "ExampleDependency",
-                "Version": "14.0.0"
-              }
-            ],
+            "Name": "Myplugintest",
+            "Url": "https://www.mycompany.com",
+            "Vendor": "MyCompany",
             "Description": "Put a short description of your plugin here",
             "License": [
               "Put short license information here"
             ],
-            "Name": "Myplugintest",
-            "Url": "https://www.mycompany.com",
-            "Vendor": "MyCompany",
-            "Version": "0.0.1"
-          },
-          "dependencies": [
-            {
-              "url": "https://github.com/pointhex/mytestplugin2/releases/download/v1.0.1/Myplugintest-15.0.0-beta1-Linux-x64.7z",
-              "size": 5000,
-              "meta_data": {
-                "Category": "Core",
-                "CompatVersion": "14.0.0",
-                "Copyright": "(C) 2023 The Qt Company Ltd",
-                "Dependencies": [
-                  {
-                    "Name": "Core",
-                    "Version": "14.0.0"
-                  }
-                ],
-                "Description": "Example dependency.",
-                "License": [
-                  "Commercial Usage",
-                  "",
-                  "Licensees holding valid Qt Commercial licenses may use this plugin in accordance with the Qt Commercial License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and The Qt Company.",
-                  "",
-                  "GNU General Public License Usage",
-                  "",
-                  "Alternatively, this plugin may be used under the terms of the GNU General Public License version 3 as published by the Free Software Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT included in the packaging of this plugin. Please review the following information to ensure the GNU General Public License requirements will be met: https://www.gnu.org/licenses/gpl-3.0.html."
-                ],
-                "Name": "ExampleDependency",
-                "Url": "http://www.qt.io",
-                "Vendor": "The Qt Company Ltd",
-                "Version": "14.0.0"
+            "Dependencies": [
+              {
+                "Name": "Core",
+                "Version": "15.0.0-beta1"
               }
-            }
-          ]
+            ]
+          },
+          "dependencies": []
         }
       ]
     }
