@@ -302,6 +302,8 @@ jobs:
         node-version: '18'
 
     - name: Run the Node.js script to update JSON
+      env:
+        QT_TOKEN: ${{ secrets.TOKEN }}
       run: node modifyJson.js ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} ${{ env.QT_CREATOR_VERSION }} ${{ env.QT_VERSION }}
 
     # - name: Upload the json to server
