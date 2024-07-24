@@ -82,7 +82,7 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-Windows-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-Windows-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
@@ -125,7 +125,7 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-Linux-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-Linux-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
@@ -168,7 +168,7 @@
       "host_os_architecture": "x86_64",
       "plugins": [
         {
-          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-beta1-macOS-x64.7z",
+          "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-macOS-x64.7z",
           "size": 5000,
           "meta_data": {
             "Category": "Core",
