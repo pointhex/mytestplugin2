@@ -206,9 +206,6 @@ jobs:
     #         ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
     #     endforeach()
 
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
