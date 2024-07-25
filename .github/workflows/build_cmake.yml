@@ -216,8 +216,9 @@ jobs:
 
     - name: Extract Qt Creator
       run: |
-        tar -xvf ./qtcreator.7z -C qtcreator
-        tar -xvf ./qtcreator_dev.7z -C qtcreator_dev
+        mkdir -p qtcreator
+        7z x qtcreator.7z -oqtcreator
+        7z x qtcreator_dev.7z -oqtcreator
 
     - name: Build
       shell: cmake -P {0}
