@@ -215,6 +215,7 @@ jobs:
       run: node .github/downloadQtC.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
 
     - name: Extract Qt Creator
+      shell: bash
       run: |
         mkdir -p qtcreator qtcreator_dev
         7z x qtcreator.7z -oqtcreator
