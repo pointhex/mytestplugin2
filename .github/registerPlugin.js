@@ -4,18 +4,10 @@ const path = require('path');
 const pluginJson = `{
   "set_id": null,
   "status": "published",
-  "core_compat_version_major": 14,
-  "core_compat_version_minor": 0,
-  "core_compat_version_patch": 82,
-  "core_compat_version_qualifier": 0,
-  "core_version_major": 14,
-  "core_version_minor": 0,
-  "core_version_patch": 82,
-  "core_version_qualifier": 0,
+  "core_compat_version": 14.0.82,
+  "core_version": 14.0.82,
   "host_os": "Windows",
-  "host_os_version_major": 10,
-  "host_os_version_minor": 0,
-  "host_os_version_patch": 0,
+  "host_os_version": 10.0.0,
   "host_os_architecture": "x86_64",
   "plugins": [
     {
@@ -89,14 +81,8 @@ const updatePluginData = (plugin, QtCVersion) => {
     'macOS': `${HTML_URL}/${PLUGIN_NAME}-${QT_CREATOR_VERSION}-macOS-x64.7z`
   };
 
-  plugin.core_compat_version_major = parseInt(QtCVersion.split('.')[0]);
-  plugin.core_compat_version_minor = parseInt(QtCVersion.split('.')[1]);
-  plugin.core_compat_version_patch = parseInt(QtCVersion.split('.')[2]);
-  plugin.core_compat_version_qualifier = 0;
-
-  plugin.core_version_major = parseInt(QtCVersion.split('.')[0]);
-  plugin.core_version_minor = parseInt(QtCVersion.split('.')[1]);
-  plugin.core_version_patch = parseInt(QtCVersion.split('.')[2]);
+  plugin.core_compat_version = QtCVersion
+  plugin.core_version = QtCVersion;
 
   plugin.plugins.forEach(plugin => {
     plugin.url = dictionary_platform[plugin.host_os];
@@ -121,9 +107,7 @@ const updateMainData = (mainData, pluginData) => {
 
   // Update or Add the plugin data for the current Qt Creator version
   for (const plugin of mainData.plugin_sets) {
-    if (plugin.core_compat_version_major === parseInt(QT_CREATOR_VERSION.split('.')[0])
-      && plugin.core_compat_version_minor === parseInt(QT_CREATOR_VERSION.split('.')[1])
-      && plugin.core_compat_version_patch === parseInt(QT_CREATOR_VERSION.split('.')[2])) {
+    if (plugin.core_compat_version === QT_CREATOR_VERSION) {
       updatePluginData(plugin, QT_CREATOR_VERSION);
       continue;
     }
@@ -135,10 +119,10 @@ const updateMainData = (mainData, pluginData) => {
       mainData.plugin_sets.push(newPlugin);
     }
   }
-};
 
-// Save the updated JSON file
-fs.writeFileSync(mainFilePath, JSON.stringify(mainData, null, 2), 'utf8');
+  // Save the updated JSON file
+  fs.writeFileSync(mainFilePath, JSON.stringify(mainData, null, 2), 'utf8');
+};
 
 const makeGetRequest = async (url, token) => {
   const response = await fetch(url, {
