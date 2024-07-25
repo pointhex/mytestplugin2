@@ -216,10 +216,10 @@ jobs:
 
     - name: Extract Qt Creator
       run: |
-        mkdir -p qtcreator
+        mkdir -p qtcreator qtcreator_dev
         7z x qtcreator.7z -oqtcreator
-        7z x qtcreator_dev.7z -oqtcreator
-        GITHUB_OUTPUT="qt_dir=$(pwd)/qtcreator"
+        7z x qtcreator_dev.7z -oqtcreator_dev
+        echo "qt_dir=$(pwd)/qtcreator" >> $GITHUB_ENV
 
     - name: Build
       shell: cmake -P {0}
