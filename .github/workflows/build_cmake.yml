@@ -226,6 +226,7 @@ jobs:
       id: qt_creator
       shell: cmake -P {0}
       run: |
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qtcreator" qtc_dir)
         file(APPEND "$ENV{GITHUB_OUTPUT}" "qtc_dir=${qtc_dir}")
 
         file(MAKE_DIRECTORY qtcreator)
