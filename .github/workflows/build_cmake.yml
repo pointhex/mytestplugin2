@@ -212,7 +212,7 @@ jobs:
         node-version: '18'
 
     - name: Download Qt Creator
-      run: node .github/downloadQtCreator.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
+      run: node .github/downloadQtC.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
 
     - name: Extract Qt Creator
       run: |
