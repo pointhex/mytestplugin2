@@ -214,13 +214,28 @@ jobs:
     - name: Download Qt Creator
       run: node .github/downloadQtC.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
 
+    # - name: Extract Qt Creator
+    #   shell: bash
+    #   run: |
+    #     mkdir -p qtcreator qtcreator_dev
+    #     7z x qtcreator.7z -oqtcreator
+    #     7z x qtcreator_dev.7z -oqtcreator_dev
+    #     echo "qt_dir=$(pwd)/qtcreator" >> $GITHUB_ENV
+
     - name: Extract Qt Creator
-      shell: bash
+      id: qt_creator
+      shell: cmake -P {0}
       run: |
-        mkdir -p qtcreator qtcreator_dev
-        7z x qtcreator.7z -oqtcreator
-        7z x qtcreator_dev.7z -oqtcreator_dev
-        echo "qt_dir=$(pwd)/qtcreator" >> $GITHUB_ENV
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "qtc_dir=${qtc_dir}")
+
+        file(MAKE_DIRECTORY qtcreator)
+
+        message("Downloading Qt Creator from ${qtc_base_url}/${qtc_platform}")
+
+        foreach(package qtcreator qtcreator_dev)
+          execute_process(COMMAND
+            ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
+        endforeach()
 
     - name: Build
       shell: cmake -P {0}
