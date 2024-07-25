@@ -12,22 +12,19 @@
     "Linux"
   ],
   "license": "os",
-  "copyright": "(C) MyCompany",
   "version": "0.0.1",
+  "status": "published",
+  "is_pack": false,
+  "created_at": "2024-07-25T13:48:04.824Z",
+  "updated_at": "2024-07-25T13:48:04.824Z",
+  "released_at": null,
   "version_history": [
     {
       "version": "1.0.0",
-      "released_at": "2024-01-24T15:00:00Z",
-      "is_latest": true
-    },
-    {
-      "version": "0.9.0",
-      "released_at": "2024-01-01T15:00:00Z",
-      "is_latest": false
+      "is_latest": true,
+      "released_at": "2024-01-24T15:00:00Z"
     }
   ],
-  "status": "published",
-  "is_pack": false,
   "icon": "https://url/to/icon-image",
   "small_icon": "https://url/to/small-icon-image",
   "description_paragraphs": [
@@ -40,28 +37,29 @@
   ],
   "description_links": [
     {
-      "link_text": "Online documentation",
-      "url": "https://www.qt.io"
+      "url": "https://www.qt.io",
+      "link_text": "Online documentation"
     },
     {
-      "link_text": "Tutorials",
-      "url": "https://www.qt.io"
+      "url": "https://www.qt.io",
+      "link_text": "Tutorials"
     }
   ],
   "description_images": [
     {
-      "image_label": "Example 1.",
-      "url": "https://www.qt.io/hs-fs/hubfs/Outrun_QT_INT_0310.jpg?width=600&name=Outrun_QT_INT_0310.jpg"
+      "url": "https://www.qt.io/hs-fs/hubfs/Outrun_QT_INT_0310.jpg?width=600&name=Outrun_QT_INT_0310.jpg",
+      "image_label": "Example 1."
     },
     {
-      "image_label": "Example 2.",
-      "url": "https://www.qt.io/hs-fs/hubfs/Outrun_QT_INT_0310.jpg?width=600&name=Outrun_QT_INT_0310.jpg"
+      "url": "https://www.qt.io/hs-fs/hubfs/Outrun_QT_INT_0310.jpg?width=600&name=Outrun_QT_INT_0310.jpg",
+      "image_label": "Example 2."
     }
   ],
+  "copyright": "(C) MyCompany",
   "download_history": {
     "download_count": 34857,
-    "first_download_at": "2024-01-01T00:00:00Z",
-    "latest_download_at": "2024-01-01T00:00:00Z"
+    "first_download_at": "2024-01-01T00:00:00.000Z",
+    "latest_download_at": "2024-01-01T00:00:00.000Z"
   },
   "plugin_sets": []
 }

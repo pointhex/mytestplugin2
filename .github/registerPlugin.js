@@ -2,16 +2,15 @@ const fs = require('fs');
 const path = require('path');
 
 const pluginJson = `{
-  "set_id": null,
   "status": "published",
-  "core_compat_version": 14.0.82,
-  "core_version": 14.0.82,
+  "core_compat_version": "14.0.82",
+  "core_version": "14.0.82",
   "host_os": "Windows",
-  "host_os_version": 10.0.0,
+  "host_os_version": "10.0.0",
   "host_os_architecture": "x86_64",
   "plugins": [
     {
-      "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-Windows-x64.7z",
+      "url": "",
       "size": 5000,
       "meta_data": {
         "Category": "Core",
@@ -84,9 +83,9 @@ const updatePluginData = (plugin, QtCVersion) => {
   plugin.core_compat_version = QtCVersion
   plugin.core_version = QtCVersion;
 
-  plugin.plugins.forEach(plugin => {
-    plugin.url = dictionary_platform[plugin.host_os];
-    updatePluginMetadata(plugin, pluginData);
+  plugin.plugins.forEach(pluginsEntry => {
+    pluginsEntry.url = dictionary_platform[plugin.host_os];
+    updatePluginMetadata(pluginsEntry, pluginData);
   });
 };
 
@@ -96,6 +95,9 @@ const updateMainData = (mainData, pluginData) => {
   mainData.vendor = pluginData.Vendor;
   mainData.version = pluginData.Version;
   mainData.copyright = pluginData.Copyright;
+
+  mainData.version_history[0].version = pluginData.Version;
+
   mainData.description_paragraphs = [
     {
       header: "Description",
@@ -105,17 +107,20 @@ const updateMainData = (mainData, pluginData) => {
     }
   ];
 
+  let found = false;
   // Update or Add the plugin data for the current Qt Creator version
   for (const plugin of mainData.plugin_sets) {
-    if (plugin.core_compat_version === QT_CREATOR_VERSION) {
-      updatePluginData(plugin, QT_CREATOR_VERSION);
-      continue;
+    if (plugin.core_compat_version === QT_CREATOR_VERSION_INTERNAL) {
+      updatePluginData(plugin, QT_CREATOR_VERSION_INTERNAL);
+      found = true;
     }
+  }
 
+  if (!found)  {
     for (const platform of ['Windows', 'Linux', 'macOS']) {
       const newPlugin = JSON.parse(pluginJson);
       newPlugin.host_os = platform;
-      updatePluginData(newPlugin, QT_CREATOR_VERSION);
+      updatePluginData(newPlugin, QT_CREATOR_VERSION_INTERNAL);
       mainData.plugin_sets.push(newPlugin);
     }
   }
@@ -189,11 +194,15 @@ makeGetRequest(url, TOKEN)
         `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions/${pluginId}`, mainData, TOKEN)
       .catch(error => console.error('Error:', error));
     } else {
+      console.log('No plugin found. Creating a new plugin');
       updateMainData(mainData, pluginData);
       makePostRequest(
         'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions', mainData, TOKEN)
       .catch(error => console.error('Error:', error));
     }
+    makePostRequest(
+      'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/cache/purgeall', {}, TOKEN)
+    .catch(error => console.error('Error:', error));
   })
   .catch(error => console.error('Error:', error));
 
