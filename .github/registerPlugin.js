@@ -1,6 +1,51 @@
 const fs = require('fs');
 const path = require('path');
 
+const pluginJson = `{
+  "set_id": null,
+  "status": "published",
+  "core_compat_version_major": 14,
+  "core_compat_version_minor": 0,
+  "core_compat_version_patch": 82,
+  "core_compat_version_qualifier": 0,
+  "core_version_major": 14,
+  "core_version_minor": 0,
+  "core_version_patch": 82,
+  "core_version_qualifier": 0,
+  "host_os": "Windows",
+  "host_os_version_major": 10,
+  "host_os_version_minor": 0,
+  "host_os_version_patch": 0,
+  "host_os_architecture": "x86_64",
+  "plugins": [
+    {
+      "url": "https://github.com/pointhex/mytestplugin2/releases/download/v.1.0.30/Myplugintest-15.0.0-Windows-x64.7z",
+      "size": 5000,
+      "meta_data": {
+        "Category": "Core",
+        "Version": "0.0.1",
+        "CompatVersion": "0.0.1",
+        "Copyright": "(C) MyCompany",
+        "Name": "Myplugintest",
+        "Url": "https://www.mycompany.com",
+        "Vendor": "MyCompany",
+        "Description": "Put a short description of your plugin here",
+        "License": [
+          "Put short license information here"
+        ],
+        "Dependencies": [
+          {
+            "Name": "Core",
+            "Version": "14.0.82"
+          }
+        ]
+      },
+      "dependencies": []
+    }
+  ]
+}`;
+
+
 // Read inputs from environment variables or arguments
 const HTML_URL = process.env.HTML_URL || process.argv[2];
 const PLUGIN_NAME = process.env.PLUGIN_NAME || process.argv[3];
@@ -18,11 +63,6 @@ let pluginContent = fs.readFileSync(pluginFilePath, 'utf8');
 pluginContent = pluginContent.replace(/\${IDE_PLUGIN_DEPENDENCIES};?/g, '');
 pluginContent = pluginContent.replace(/,\s*}/g, '}');
 const pluginData = JSON.parse(pluginContent);
-
-// Define the new URLs
-const windowsUrl = `${HTML_URL}/${PLUGIN_NAME}-${QT_CREATOR_VERSION}-Windows-x64.7z`;
-const linuxUrl = `${HTML_URL}/${PLUGIN_NAME}-${QT_CREATOR_VERSION}-Linux-x64.7z`;
-const macosUrl = `${HTML_URL}/${PLUGIN_NAME}-${QT_CREATOR_VERSION}-macOS-x64.7z`;
 
 // Helper function to update plugin metadata
 const updatePluginMetadata = (plugin, pluginData) => {
@@ -42,49 +82,60 @@ const updatePluginMetadata = (plugin, pluginData) => {
   });
 };
 
-// Update the global data in mainData
-mainData.name = pluginData.Name;
-mainData.vendor = pluginData.Vendor;
-mainData.version = pluginData.Version;
-mainData.copyright = pluginData.Copyright;
-mainData.description_paragraphs = [
-  {
-    header: "Description",
-    text: [
-      pluginData.Description
-    ]
+const updatePluginData = (plugin, QtCVersion) => {
+  const dictionary_platform = {
+    'Windows': `${HTML_URL}/${PLUGIN_NAME}-${QT_CREATOR_VERSION}-Windows-x64.7z`,
+    'Linux': `${HTML_URL}/${PLUGIN_NAME}-${QT_CREATOR_VERSION}-Linux-x64.7z`,
+    'macOS': `${HTML_URL}/${PLUGIN_NAME}-${QT_CREATOR_VERSION}-macOS-x64.7z`
+  };
+
+  plugin.core_compat_version_major = parseInt(QtCVersion.split('.')[0]);
+  plugin.core_compat_version_minor = parseInt(QtCVersion.split('.')[1]);
+  plugin.core_compat_version_patch = parseInt(QtCVersion.split('.')[2]);
+  plugin.core_compat_version_qualifier = 0;
+
+  plugin.core_version_major = parseInt(QtCVersion.split('.')[0]);
+  plugin.core_version_minor = parseInt(QtCVersion.split('.')[1]);
+  plugin.core_version_patch = parseInt(QtCVersion.split('.')[2]);
+
+  plugin.plugins.forEach(plugin => {
+    plugin.url = dictionary_platform[plugin.host_os];
+    updatePluginMetadata(plugin, pluginData);
+  });
+};
+
+const updateMainData = (mainData, pluginData) => {
+  // Update the global data in mainData
+  mainData.name = pluginData.Name;
+  mainData.vendor = pluginData.Vendor;
+  mainData.version = pluginData.Version;
+  mainData.copyright = pluginData.Copyright;
+  mainData.description_paragraphs = [
+    {
+      header: "Description",
+      text: [
+        pluginData.Description
+      ]
+    }
+  ];
+
+  // Update or Add the plugin data for the current Qt Creator version
+  for (const plugin of mainData.plugin_sets) {
+    if (plugin.core_compat_version_major === parseInt(QT_CREATOR_VERSION.split('.')[0])
+      && plugin.core_compat_version_minor === parseInt(QT_CREATOR_VERSION.split('.')[1])
+      && plugin.core_compat_version_patch === parseInt(QT_CREATOR_VERSION.split('.')[2])) {
+      updatePluginData(plugin, QT_CREATOR_VERSION);
+      continue;
+    }
+
+    for (const platform of ['Windows', 'Linux', 'macOS']) {
+      const newPlugin = JSON.parse(pluginJson);
+      newPlugin.host_os = platform;
+      updatePluginData(newPlugin, QT_CREATOR_VERSION);
+      mainData.plugin_sets.push(newPlugin);
+    }
   }
-];
-
-
-// Update the plugin_sets URLs, versions, and metadata
-mainData.plugin_sets.forEach(set => {
-  set.core_compat_version_major = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[0]);
-  set.core_compat_version_minor = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[1]);
-  set.core_compat_version_patch = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[2]);
-  set.core_compat_version_qualifier = 0;
-
-  set.core_version_major = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[0]);
-  set.core_version_minor = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[1]);
-  set.core_version_patch = parseInt(QT_CREATOR_VERSION_INTERNAL.split('.')[2]);
-
-  if (set.host_os === 'Windows') {
-    set.plugins.forEach(plugin => {
-      plugin.url = windowsUrl;
-      updatePluginMetadata(plugin, pluginData);
-    });
-  } else if (set.host_os === 'Linux') {
-    set.plugins.forEach(plugin => {
-      plugin.url = linuxUrl;
-      updatePluginMetadata(plugin, pluginData);
-    });
-  } else if (set.host_os === 'macOS') {
-    set.plugins.forEach(plugin => {
-      plugin.url = macosUrl;
-      updatePluginMetadata(plugin, pluginData);
-    });
-  }
-});
+};
 
 // Save the updated JSON file
 fs.writeFileSync(mainFilePath, JSON.stringify(mainData, null, 2), 'utf8');
@@ -149,10 +200,12 @@ makeGetRequest(url, TOKEN)
 .then(response => {
     if (response.items.length > 0 && response.items[0].extension_id !== '') {
       const pluginId = response.items[0].extension_id;
+      updateMainData(response.items[0], pluginData);
       makePutRequest(
         `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions/${pluginId}`, mainData, TOKEN)
       .catch(error => console.error('Error:', error));
     } else {
+      updateMainData(mainData, pluginData);
       makePostRequest(
         'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions', mainData, TOKEN)
       .catch(error => console.error('Error:', error));
