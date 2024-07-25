@@ -22,17 +22,20 @@ jobs:
         - {
             name: "Windows Latest MSVC", artifact: "Windows-x64",
             os: windows-latest,
+            platform: windows_x64,
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
         - {
             name: "Ubuntu Latest GCC", artifact: "Linux-x64",
             os: ubuntu-latest,
+            platform: linux_x64,
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "macOS Latest Clang", artifact: "macOS-x64",
             os: macos-latest,
+            platform: mac_x64,
             cc: "clang", cxx: "clang++"
           }
 
@@ -168,40 +171,56 @@ jobs:
           )
         endif()
 
+    # - name: Download Qt Creator
+    #   id: qt_creator
+    #   shell: cmake -P {0}
+    #   run: |
+    #     string(REGEX MATCH "([0-9]+.[0-9]+).[0-9]+" outvar "$ENV{QT_CREATOR_VERSION}")
+
+    #     set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source")
+    #     set(qtc_snapshot "$ENV{QT_CREATOR_SNAPSHOT}")
+    #     if (qtc_snapshot)
+    #       set(qtc_base_url "https://download.qt.io/snapshots/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source/${qtc_snapshot}")
+    #     endif()
+
+    #     if ("${{ runner.os }}" STREQUAL "Windows")
+    #       set(qtc_platform "windows_x64")
+    #     elseif ("${{ runner.os }}" STREQUAL "Linux")
+    #       set(qtc_platform "linux_x64")
+    #     elseif ("${{ runner.os }}" STREQUAL "macOS")
+    #       set(qtc_platform "mac_x64")
+    #     endif()
+
+    #     file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qtcreator" qtc_dir)
+    #     # Save the path for other steps
+    #     file(APPEND "$ENV{GITHUB_OUTPUT}" "qtc_dir=${qtc_dir}")
+
+    #     file(MAKE_DIRECTORY qtcreator)
+
+    #     message("Downloading Qt Creator from ${qtc_base_url}/${qtc_platform}")
+
+    #     foreach(package qtcreator qtcreator_dev)
+    #       file(DOWNLOAD
+    #         "${qtc_base_url}/${qtc_platform}/${package}.7z" ./${package}.7z SHOW_PROGRESS)
+    #       execute_process(COMMAND
+    #         ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
+    #     endforeach()
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
     - name: Download Qt Creator
-      id: qt_creator
-      shell: cmake -P {0}
+      run: node .github/downloadQtCreator.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
+
+    - name: Extract Qt Creator
       run: |
-        string(REGEX MATCH "([0-9]+.[0-9]+).[0-9]+" outvar "$ENV{QT_CREATOR_VERSION}")
-
-        set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source")
-        set(qtc_snapshot "$ENV{QT_CREATOR_SNAPSHOT}")
-        if (qtc_snapshot)
-          set(qtc_base_url "https://download.qt.io/snapshots/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source/${qtc_snapshot}")
-        endif()
-
-        if ("${{ runner.os }}" STREQUAL "Windows")
-          set(qtc_platform "windows_x64")
-        elseif ("${{ runner.os }}" STREQUAL "Linux")
-          set(qtc_platform "linux_x64")
-        elseif ("${{ runner.os }}" STREQUAL "macOS")
-          set(qtc_platform "mac_x64")
-        endif()
-
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qtcreator" qtc_dir)
-        # Save the path for other steps
-        file(APPEND "$ENV{GITHUB_OUTPUT}" "qtc_dir=${qtc_dir}")
-
-        file(MAKE_DIRECTORY qtcreator)
-
-        message("Downloading Qt Creator from ${qtc_base_url}/${qtc_platform}")
-
-        foreach(package qtcreator qtcreator_dev)
-          file(DOWNLOAD
-            "${qtc_base_url}/${qtc_platform}/${package}.7z" ./${package}.7z SHOW_PROGRESS)
-          execute_process(COMMAND
-            ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
-        endforeach()
+        tar -xvf qtcreator/qtcreator.7z -C qtcreator
+        tar -xvf qtcreator/qtcreator_dev.7z -C qtcreator_dev
 
     - name: Build
       shell: cmake -P {0}
