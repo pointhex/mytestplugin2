@@ -219,6 +219,7 @@ jobs:
         mkdir -p qtcreator
         7z x qtcreator.7z -oqtcreator
         7z x qtcreator_dev.7z -oqtcreator
+        GITHUB_OUTPUT="qt_dir=$(pwd)/qtcreator"
 
     - name: Build
       shell: cmake -P {0}
