@@ -45,26 +45,26 @@ const QT_CREATOR_VERSION_INTERNAL = process.env.QT_CREATOR_VERSION_INTERNAL || p
 const TOKEN = process.env.TOKEN || process.argv[6];
 
 // Read the main JSON files
-const mainFilePath = path.join(__dirname, 'template.json');
-const mainData = JSON.parse(fs.readFileSync(mainFilePath, 'utf8'));
+const templateFilePath = path.join(__dirname, 'template.json');
+const templateFileData = JSON.parse(fs.readFileSync(templateFilePath, 'utf8'));
 
 // Read the plugin JSON file
 const pluginFilePath = path.join(__dirname, '..', `${PLUGIN_NAME}.json.in`);
 let pluginContent = fs.readFileSync(pluginFilePath, 'utf8');
 pluginContent = pluginContent.replace(/\${IDE_PLUGIN_DEPENDENCIES};?/g, '');
 pluginContent = pluginContent.replace(/,\s*}/g, '}');
-const pluginData = JSON.parse(pluginContent);
+const pluginQtcData = JSON.parse(pluginContent);
 
 // Helper function to update plugin metadata
-const updatePluginMetadata = (plugin, pluginData) => {
-  plugin.meta_data.Name = pluginData.Name;
-  plugin.meta_data.Version = pluginData.Version;
-  plugin.meta_data.CompatVersion = pluginData.CompatVersion;
-  plugin.meta_data.Vendor = pluginData.Vendor;
-  plugin.meta_data.Copyright = pluginData.Copyright;
-  plugin.meta_data.License = [pluginData.License];
-  plugin.meta_data.Description = pluginData.Description;
-  plugin.meta_data.Url = pluginData.Url;
+const updatePluginMetadata = (plugin, pluginQtcData) => {
+  plugin.meta_data.Name = pluginQtcData.Name;
+  plugin.meta_data.Version = pluginQtcData.Version;
+  plugin.meta_data.CompatVersion = pluginQtcData.CompatVersion;
+  plugin.meta_data.Vendor = pluginQtcData.Vendor;
+  plugin.meta_data.Copyright = pluginQtcData.Copyright;
+  plugin.meta_data.License = [pluginQtcData.License];
+  plugin.meta_data.Description = pluginQtcData.Description;
+  plugin.meta_data.Url = pluginQtcData.Url;
 
   plugin.meta_data.Dependencies.forEach(dependency => {
     if (dependency.Name === 'Core') {
@@ -85,31 +85,31 @@ const updatePluginData = (plugin, QtCVersion) => {
 
   plugin.plugins.forEach(pluginsEntry => {
     pluginsEntry.url = dictionary_platform[plugin.host_os];
-    updatePluginMetadata(pluginsEntry, pluginData);
+    updatePluginMetadata(pluginsEntry, pluginQtcData);
   });
 };
 
-const updateMainData = (mainData, pluginData) => {
+const updateEndJsonData = (endJsonData, pluginQtcData) => {
   // Update the global data in mainData
-  mainData.name = pluginData.Name;
-  mainData.vendor = pluginData.Vendor;
-  mainData.version = pluginData.Version;
-  mainData.copyright = pluginData.Copyright;
+  endJsonData.name = pluginQtcData.Name;
+  endJsonData.vendor = pluginQtcData.Vendor;
+  endJsonData.version = pluginQtcData.Version;
+  endJsonData.copyright = pluginQtcData.Copyright;
 
-  mainData.version_history[0].version = pluginData.Version;
+  endJsonData.version_history[0].version = pluginQtcData.Version;
 
-  mainData.description_paragraphs = [
+  endJsonData.description_paragraphs = [
     {
       header: "Description",
       text: [
-        pluginData.Description
+        pluginQtcData.Description
       ]
     }
   ];
 
   let found = false;
   // Update or Add the plugin data for the current Qt Creator version
-  for (const plugin of mainData.plugin_sets) {
+  for (const plugin of endJsonData.plugin_sets) {
     if (plugin.core_compat_version === QT_CREATOR_VERSION_INTERNAL) {
       updatePluginData(plugin, QT_CREATOR_VERSION_INTERNAL);
       found = true;
@@ -121,12 +121,12 @@ const updateMainData = (mainData, pluginData) => {
       const newPlugin = JSON.parse(pluginJson);
       newPlugin.host_os = platform;
       updatePluginData(newPlugin, QT_CREATOR_VERSION_INTERNAL);
-      mainData.plugin_sets.push(newPlugin);
+      endJsonData.plugin_sets.push(newPlugin);
     }
   }
 
   // Save the updated JSON file
-  fs.writeFileSync(mainFilePath, JSON.stringify(mainData, null, 2), 'utf8');
+  fs.writeFileSync(templateFilePath, JSON.stringify(endJsonData, null, 2), 'utf8');
 };
 
 const makeGetRequest = async (url, token) => {
@@ -181,28 +181,50 @@ const makePostRequest = async (url, data, token) => {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
 
-  return await response.json();
+  // return await response.json();
+  const contentType = response.headers.
+    get('content-type');
+  if (contentType && contentType.
+    includes('application/json')) {
+    return response.json();
+  } else {
+    return {};
+  }
 };
+
+const purgCache = async () => {
+  try {
+    await makePostRequest(
+      'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/cache/purgeall',
+      {},
+      TOKEN
+    );
+    console.log('Cache purged successfully');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 
 const url = `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions?search=${PLUGIN_NAME}`;
 makeGetRequest(url, TOKEN)
 .then(response => {
     if (response.items.length > 0 && response.items[0].extension_id !== '') {
       const pluginId = response.items[0].extension_id;
-      updateMainData(response.items[0], pluginData);
+      console.log('Plugin found. Updating the plugin');
+      updateEndJsonData(response.items[0], pluginQtcData);
       makePutRequest(
-        `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions/${pluginId}`, mainData, TOKEN)
+        `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions/${pluginId}`, response.items[0], TOKEN)
+      .then(() => purgCache())
       .catch(error => console.error('Error:', error));
     } else {
       console.log('No plugin found. Creating a new plugin');
-      updateMainData(mainData, pluginData);
+      updateEndJsonData(templateFileData, pluginQtcData);
       makePostRequest(
-        'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions', mainData, TOKEN)
+        'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions', templateFileData, TOKEN)
+      .then(() => purgCache())
       .catch(error => console.error('Error:', error));
     }
-    makePostRequest(
-      'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/cache/purgeall', {}, TOKEN)
-    .catch(error => console.error('Error:', error));
   })
   .catch(error => console.error('Error:', error));
 
