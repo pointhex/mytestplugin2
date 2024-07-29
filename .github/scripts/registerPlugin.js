@@ -192,10 +192,16 @@ const makePostRequest = async (url, data, token) => {
   }
 };
 
+const API_URL = 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/';
+if (API_URL === '') {
+  updateEndJsonData(templateFileData, pluginQtcData);
+  process.exit(1);
+}
+
 const purgCache = async () => {
   try {
     await makePostRequest(
-      'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/cache/purgeall',
+      `${API_URL}api/v1/cache/purgeall`,
       {},
       TOKEN
     );
@@ -205,23 +211,28 @@ const purgCache = async () => {
   }
 };
 
-
-const url = `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions?search=${PLUGIN_NAME}`;
+const url = `${API_URL}api/v1/admin/extensions?search=${PLUGIN_NAME}`;
 makeGetRequest(url, TOKEN)
-.then(response => {
+  .then(response => {
     if (response.items.length > 0 && response.items[0].extension_id !== '') {
       const pluginId = response.items[0].extension_id;
       console.log('Plugin found. Updating the plugin');
       updateEndJsonData(response.items[0], pluginQtcData);
       makePutRequest(
-        `https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions/${pluginId}`, response.items[0], TOKEN)
+        `${API_URL}api/v1/admin/extensions/${pluginId}`, 
+        response.items[0], 
+        TOKEN
+      )
       .then(() => purgCache())
       .catch(error => console.error('Error:', error));
     } else {
       console.log('No plugin found. Creating a new plugin');
       updateEndJsonData(templateFileData, pluginQtcData);
       makePostRequest(
-        'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/api/v1/admin/extensions', templateFileData, TOKEN)
+        `${API_URL}api/v1/admin/extensions`, 
+        templateFileData, 
+        TOKEN
+      )
       .then(() => purgCache())
       .catch(error => console.error('Error:', error));
     }
