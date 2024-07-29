@@ -9,8 +9,8 @@ env:
   QT_CREATOR_VERSION: 15.0.0-beta1
   QT_CREATOR_VERSION_INTERNAL: 14.0.82
   QT_CREATOR_SNAPSHOT: latest 
-  CMAKE_VERSION: 3.21.1
-  NINJA_VERSION: 1.10.1
+  CMAKE_VERSION: 3.29.6
+  NINJA_VERSION: 1.12.1
 
 jobs:
   build:
@@ -52,9 +52,9 @@ jobs:
       shell: cmake -P {0}
       run: |
         if (${{github.ref}} MATCHES "tags/v(.*)")
-            file(APPEND "$ENV{GITHUB_OUTPUT}" "tag=${CMAKE_MATCH_1}\\n")
+            file(APPEND "$ENV{GITHUB_OUTPUT}" "tag=${CMAKE_MATCH_1}")
         else()
-            file(APPEND "$ENV{GITHUB_OUTPUT}" "tag=${{github.run_id}}\\n")
+            file(APPEND "$ENV{GITHUB_OUTPUT}" "tag=${{github.run_id}}")
         endif()
 
     - name: Download Ninja and CMake
