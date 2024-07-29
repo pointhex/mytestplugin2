@@ -49,7 +49,7 @@ const templateFilePath = path.join(__dirname, 'template.json');
 const templateFileData = JSON.parse(fs.readFileSync(templateFilePath, 'utf8'));
 
 // Read the plugin JSON file
-const pluginFilePath = path.join(__dirname, '..', `${PLUGIN_NAME}.json.in`);
+const pluginFilePath = path.join(__dirname, '../..', `${PLUGIN_NAME}.json.in`);
 let pluginContent = fs.readFileSync(pluginFilePath, 'utf8');
 pluginContent = pluginContent.replace(/\${IDE_PLUGIN_DEPENDENCIES};?/g, '');
 pluginContent = pluginContent.replace(/,\s*}/g, '}');
