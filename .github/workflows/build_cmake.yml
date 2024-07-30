@@ -298,7 +298,7 @@ jobs:
       run: |
         RELEASE_HTML_URL=$(echo "${{ steps.create_release.outputs.url }}" | sed 's/tag/download/')
         echo "RELEASE_HTML_URL=${RELEASE_HTML_URL}" >> $GITHUB_ENV
-        NEW_RELEASE_HTML_URL=$(echo "${{github.event.repository.html_url}}/releases/tag/${{ needs.build.outputs.tag }}")')
+        NEW_RELEASE_HTML_URL=$(echo "${{github.event.repository.html_url}}/releases/tag/${{ needs.build.outputs.tag }}")
     
     - name: Set up Node.js
       uses: actions/setup-node@v4
