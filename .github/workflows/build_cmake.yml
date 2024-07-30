@@ -290,13 +290,13 @@ jobs:
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v4
       with:
-        name: plugin-json
+        name: ./plugin-json.7z
         path: .github/scripts/template.json
 
   release:
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, update_json] 
 
     steps:
     - name: Download artifacts
