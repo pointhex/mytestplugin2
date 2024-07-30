@@ -290,7 +290,7 @@ jobs:
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ./plugin-json.7z
+        name: plugin-json
         path: .github/scripts/template.json
 
   release:
