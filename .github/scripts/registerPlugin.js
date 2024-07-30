@@ -45,7 +45,7 @@ const QT_CREATOR_VERSION_INTERNAL = process.env.QT_CREATOR_VERSION_INTERNAL || p
 const TOKEN = process.env.TOKEN || process.argv[6];
 
 // Read the main JSON files
-const templateFilePath = path.join(__dirname, 'template.json');
+const templateFilePath = path.join(__dirname, 'plugin.json');
 const templateFileData = JSON.parse(fs.readFileSync(templateFilePath, 'utf8'));
 
 // Read the plugin JSON file
@@ -192,10 +192,10 @@ const makePostRequest = async (url, data, token) => {
   }
 };
 
-const API_URL = 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/';
+const API_URL = '';
 if (API_URL === '') {
   updateEndJsonData(templateFileData, pluginQtcData);
-  process.exit(1);
+  process.exit(0);
 }
 
 const purgCache = async () => {
