@@ -18,16 +18,21 @@ const folderPath = `${major}.${minor}/${version}/`;
 const urlBase = baseUrls[0] + folderPath + 'installer_source/' + platform + '/';
 const urlSnapshot = baseUrls[1] + folderPath + 'installer_source/latest/' + platform + '/';
 
-for (const url of [urlBase, urlSnapshot]) {
-    try {
-        for (const packageName of ['qtcreator.7z', 'qtcreator_dev.7z']) {
-            await downloadPackage(url, packageName);
+async function downloadQtC() {
+    for (const url of [urlBase, urlSnapshot]) {
+        try {
+            console.log(`Downloading from ${url}`);
+            for (const packageName of ['qtcreator.7z', 'qtcreator_dev.7z']) {
+                await downloadPackage(url, packageName);
+            }
+            return '';
+        } catch (error) {
+            console.error(`Failed to download from ${url}:`, error);
         }
-        return '';
-    } catch (error) {
-        console.error(`Failed to download from ${url}:`, error);
     }
+
+    console.error('Failed to download Qt Creator packages');
+    process.exit(1);
 }
 
-console.error('Failed to download Qt Creator packages');
-process.exit(1);
+downloadQtC();

@@ -14,7 +14,7 @@ async function downloadPackage(baseUrl, packageName) {
                     } else if (response.statusCode === 200) {
                         resolve(url);
                     } else {
-                        reject(new Error(`Failed to get '${url}' (${response.statusCode})`));
+                        reject(`Failed to get '${url}' (${response.statusCode})`);
                     }
                 }).on('error', (err) => {
                     reject(err);
