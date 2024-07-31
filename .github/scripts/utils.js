@@ -1,14 +1,15 @@
 const https = require('https');
 const fs = require('fs');
+
 async function downloadPackage(baseUrl, packageName) {
     const url = baseUrl + packageName;
     const outputPath = packageName;
+    
     return new Promise((resolve, reject) => {
         function getFinalUrl(url) {
             return new Promise((resolve, reject) => {
                 https.get(url, (response) => {
                     if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-                        // Handle redirection
                         const redirectedUrl = new URL(response.headers.location, url).href;
                         getFinalUrl(redirectedUrl).then(resolve).catch(reject);
                     } else if (response.statusCode === 200) {
@@ -16,9 +17,7 @@ async function downloadPackage(baseUrl, packageName) {
                     } else {
                         reject(`Failed to get '${url}' (${response.statusCode})`);
                     }
-                }).on('error', (err) => {
-                    reject(err);
-                });
+                }).on('error', reject);
             });
         }
 
@@ -29,9 +28,7 @@ async function downloadPackage(baseUrl, packageName) {
                 }
 
                 const file = fs.createWriteStream(outputPath);
-
                 response.pipe(file);
-
                 file.on('finish', () => {
                     file.close(() => {
                         console.log('Download complete for', outputPath);
@@ -43,9 +40,7 @@ async function downloadPackage(baseUrl, packageName) {
                     fs.unlink(outputPath, () => {}); // Delete the file if there's an error
                     reject(err);
                 });
-            }).on('error', (err) => {
-                reject(err);
-            });
+            }).on('error', reject);
         }).catch(reject);
     });
 }
