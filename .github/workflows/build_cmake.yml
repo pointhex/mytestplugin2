@@ -291,7 +291,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: plugin-json
-        path: .github/scripts/plugin.json
+        path: .github/scripts/${{ env.PLUGIN_NAME }}.json
 
   release:
     if: contains(github.ref, 'tags/v')
