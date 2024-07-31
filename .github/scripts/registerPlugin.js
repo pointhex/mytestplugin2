@@ -126,7 +126,7 @@ const request = async (type, url, token, data) => {
   });
   if (!response.ok) {
     const errorResponse = await response.json();
-    console.error('PUT Request Error Response:', errorResponse); // Log the error response
+    console.error(`${type} Request Error Response:`, errorResponse); // Log the error response
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   return await response.json();
@@ -138,7 +138,7 @@ const get = (url, token) => request('GET', url, token)
 
 const purgeCache = async (env) => {
   try {
-    await post(`${env.API_URL}api/v1/cache/purgeall`, {}, env.TOKEN);
+    await post(`${env.API_URL}api/v1/cache/purgeall`, env.TOKEN, {});
     console.log('Cache purged successfully');
   } catch (error) {
     console.error('Error:', error);
@@ -152,7 +152,7 @@ async function main() {
     QT_CREATOR_VERSION: process.env.QT_CREATOR_VERSION || process.argv[4],
     QT_CREATOR_VERSION_INTERNAL: process.env.QT_CREATOR_VERSION_INTERNAL || process.argv[5],
     TOKEN: process.env.TOKEN || process.argv[6],
-    API_URL: process.env.API_URL || process.argv[7] || ''
+    API_URL: process.env.API_URL || process.argv[7] || 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/'
   };
 
   // Read the plugin JSON file
@@ -169,16 +169,17 @@ async function main() {
     process.exit(0);
   }
 
-  const response = await get(`${api_url}api/v1/admin/extensions?search=${env.PLUGIN_NAME}`, env.TOKEN);
+  const response = await get(`${env.API_URL}api/v1/admin/extensions?search=${env.PLUGIN_NAME}`, env.TOKEN);
   if (response.items.length > 0 && response.items[0].extension_id !== '') {
     const pluginId = response.items[0].extension_id;
     console.log('Plugin found. Updating the plugin');
     updateServerPluginJson(response.items[0], pluginQtcData, env);
-    await put(`${api_url}api/v1/admin/extensions/${pluginId}`, response.items[0], env.TOKEN);
+
+    await put(`${env.API_URL}api/v1/admin/extensions/${pluginId}`, env.TOKEN, response.items[0]);
   } else {
     console.log('No plugin found. Creating a new plugin');
     updateServerPluginJson(templateFileData, pluginQtcData, env);
-    await post(`${api_url}api/v1/admin/extensions`, templateFileData, env.TOKEN);
+    await post(`${env.API_URL}api/v1/admin/extensions`, env.TOKEN, templateFileData);
   }
   await purgeCache(env);
 }
