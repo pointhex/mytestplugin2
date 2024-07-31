@@ -278,8 +278,7 @@ jobs:
 
     - name: Store Release upload_url
       run: |
-        # RELEASE_HTML_URL=$(echo "${{ steps.create_release.outputs.url }}" | sed 's/tag/download/')
-        RELEASE_HTML_URL=$(echo "${{github.event.repository.html_url}}/releases/tag/v${{ needs.build.outputs.tag }}")
+        RELEASE_HTML_URL=$(echo "${{github.event.repository.html_url}}/releases/download/v${{ needs.build.outputs.tag }}")
         echo "RELEASE_HTML_URL=${RELEASE_HTML_URL}" >> $GITHUB_ENV
 
     - name: Run the Node.js script to update JSON
