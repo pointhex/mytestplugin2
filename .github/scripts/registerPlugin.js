@@ -12,7 +12,7 @@ const updatePluginMetadata = (plugin, pluginQtcData, env) => {
   plugin.meta_data.Description = pluginQtcData.Description;
   plugin.meta_data.Url = pluginQtcData.Url;
 
-  plugin.meta_data.Dependencies = new Map(pluginQtcData.Dependencies);
+  plugin.meta_data.Dependencies = pluginQtcData.Dependencies;
 };
 
 const updatePluginData = (plugin, env, pluginQtcData) => {

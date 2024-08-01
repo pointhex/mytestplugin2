@@ -258,11 +258,6 @@ jobs:
       with:
         # same for all platforms for now
         name: ${{ env.PLUGIN_NAME }}-Linux-x64-json
-
-    - name: Delete artifacts
-      uses: geekyeggo/delete-artifact@v5
-      with:
-        name: ${{ env.PLUGIN_NAME }}*-json
    
     - name: Store Release upload_url
       run: |
@@ -273,6 +268,11 @@ jobs:
       env:
         QT_TOKEN: ${{ secrets.TOKEN }}
       run: node .github/scripts/registerPlugin.js ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} ${{ env.QT_CREATOR_VERSION }} ${{ env.QT_CREATOR_VERSION_INTERNAL }} ${{ env.QT_TOKEN }}
+
+    - name: Delete previous json artifacts
+      uses: geekyeggo/delete-artifact@v5
+      with:
+        name: ${{ env.PLUGIN_NAME }}*-json
 
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v4
