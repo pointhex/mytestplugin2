@@ -268,7 +268,7 @@ jobs:
     - name: Upload plugin json
       uses: actions/upload-artifact@v4
       with:
-        path: ./build/${{ env.PLUGIN_NAME }}1.json
+        path: ./build/${{ env.PLUGIN_NAME }}.json
         name: ${{ env.PLUGIN_NAME }}1.json
 
   update_json:
