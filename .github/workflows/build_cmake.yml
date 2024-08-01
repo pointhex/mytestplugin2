@@ -262,7 +262,7 @@ jobs:
     - name: Delete artifacts
       uses: geekyeggo/delete-artifact@v5
       with:
-        name: ${{ env.PLUGIN_NAME }}.*-json
+        name: ${{ env.PLUGIN_NAME }}*-json
    
     - name: Store Release upload_url
       run: |
