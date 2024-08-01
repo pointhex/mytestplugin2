@@ -257,7 +257,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         # same for all platforms for now
-        name: ${{ env.PLUGIN_NAME }}-Linux-x64.json
+        name: ${{ env.PLUGIN_NAME }}-Linux-x64-json
 
     - name: Delete artifacts
       uses: geekyeggo/delete-artifact@v5
