@@ -242,16 +242,8 @@ jobs:
         path: ./build/build/${{ env.PLUGIN_NAME }}.json
         name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.artifact }}.json
 
-  # check_json:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   steps:
-  #     - name: check build json
-  #       run: |
-  #         ls -ll build/build
-
   update_json:
-    if: contains(github.ref, 'tags/v')
+    # if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
     needs: build
 
@@ -265,7 +257,12 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         # same for all platforms for now
-        name: ${{ env.PLUGIN_NAME }}-Linux-x64.json 
+        name: ${{ env.PLUGIN_NAME }}-Linux-x64.json
+    
+    - name: Check json loading
+      run: |
+        echo "Loading JSON file"
+        ls -ll ./        
 
     - name: Store Release upload_url
       run: |

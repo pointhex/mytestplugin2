@@ -156,12 +156,14 @@ async function main() {
   };
 
   // Read the plugin JSON file
-  const pluginFilePath = path.join(__dirname, '../..', `${env.PLUGIN_NAME}.json.in`);
-  let pluginContent = fs.readFileSync(pluginFilePath, 'utf8');
-  pluginContent = pluginContent.replace(/\${IDE_PLUGIN_DEPENDENCIES};?/g, '');
-  pluginContent = pluginContent.replace(/,\s*}/g, '}');
-  const pluginQtcData = JSON.parse(pluginContent);
+  // const pluginFilePath = path.join(__dirname, '../..', `${env.PLUGIN_NAME}.json.in`);
+  // let pluginContent = fs.readFileSync(pluginFilePath, 'utf8');
+  // pluginContent = pluginContent.replace(/\${IDE_PLUGIN_DEPENDENCIES};?/g, '');
+  // pluginContent = pluginContent.replace(/,\s*}/g, '}');
+  // const pluginQtcData = JSON.parse(pluginContent);
 
+  const pluginQtcData = require(`../../${env.PLUGIN_NAME}-Linux-x64.json`);
+  console.log('pluginQtcData:', pluginQtcData);
   const templateFileData = require('./plugin.json');
   
   if (env.API_URL === '') {

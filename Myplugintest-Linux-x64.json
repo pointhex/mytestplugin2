@@ -1,0 +1,14 @@
+{
+    "Name" : "Myplugintest",
+    "Version" : "0.0.1",
+    "CompatVersion" : "0.0.1",
+    "DisabledByDefault" : true,
+    "Vendor" : "MyCompany",
+    "Copyright" : "(C) MyCompany",
+    "License" : "Put short license information here",
+    "Description" : "Put a short description of your plugin here",
+    "Url" : "https://www.mycompany.com",
+    "Dependencies" : [
+        { "Name" : "Core", "Version" : "14.0.82" }
+    ]
+}
