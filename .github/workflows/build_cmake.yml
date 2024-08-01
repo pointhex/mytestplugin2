@@ -168,7 +168,7 @@ jobs:
     - name: Download Qt Creator
       uses: Maddimax/install-qtc@v1
       with:
-        version: 14.0.0
+        version: ${{ env.QT_CREATOR_VERSION }}
         unzip-to: 'qtcreator'
 
     - name: Extract Qt Creator
@@ -239,8 +239,8 @@ jobs:
     - name: Upload plugin json
       uses: actions/upload-artifact@v4
       with:
+        name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.artifact }}-json
         path: ./build/build/${{ env.PLUGIN_NAME }}.json
-        name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.artifact }}.json
 
   update_json:
     if: contains(github.ref, 'tags/v')
@@ -258,6 +258,11 @@ jobs:
       with:
         # same for all platforms for now
         name: ${{ env.PLUGIN_NAME }}-Linux-x64.json
+
+    - name: Delete artifacts
+      uses: geekyeggo/delete-artifact@v5
+      with:
+        name: ${{ env.PLUGIN_NAME }}.*-json
    
     - name: Store Release upload_url
       run: |
