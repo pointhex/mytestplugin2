@@ -13,6 +13,7 @@
   ],
   "license": "os",
   "version": "0.0.1",
+  "status": "published",
   "is_pack": false,
   "released_at": null,
   "version_history": [
@@ -45,6 +46,8 @@
     }
   ],
   "copyright": "(C) MyCompany",
-  "download_history": {},
+  "download_history": {
+    "download_count": 0
+  },
   "plugin_sets": []
 }
