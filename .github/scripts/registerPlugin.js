@@ -133,7 +133,7 @@ async function main() {
     API_URL: process.env.API_URL || process.argv[7] || 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/'
   };
 
-  const pluginQtcData = require(`../../${env.PLUGIN_NAME}-Linux-x64.json`);
+  const pluginQtcData = require(`../../${env.PLUGIN_NAME}-Linux-x64.json/${env.PLUGIN_NAME}.json`);
   const templateFileData = require('./plugin.json');
 
   if (env.API_URL === '') {

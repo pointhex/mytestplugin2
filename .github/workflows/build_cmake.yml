@@ -256,11 +256,12 @@ jobs:
       with:
         # same for all platforms for now
         name: ${{ env.PLUGIN_NAME }}-Linux-x64-json
+        path: ./${{ env.PLUGIN_NAME }}-Linux-x64.json
 
     - name: Check json file
       run: |
-        ls -ll ./
-  
+        ls -ll ./${{ env.PLUGIN_NAME }}-Linux-x64.json/
+
     - name: Store Release upload_url
       run: |
         RELEASE_HTML_URL=$(echo "${{github.event.repository.html_url}}/releases/download/v${{ needs.build.outputs.tag }}")
