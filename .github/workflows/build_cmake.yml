@@ -168,7 +168,7 @@ jobs:
     - name: Download Qt Creator
       uses: Maddimax/install-qtc@v1
       with:
-        version: ${{ env.QT_CREATOR_VERSION }}
+        version: 14.0.0
         unzip-to: 'qtcreator'
 
     - name: Extract Qt Creator
