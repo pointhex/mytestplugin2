@@ -163,8 +163,6 @@ jobs:
           )
         endif()
 
-        #   run: node .github/scripts/downloadQtC.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
-
     - name: Download Qt Creator
       uses: Maddimax/install-qtc@v1.1
       with:
@@ -283,7 +281,7 @@ jobs:
   release:
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
-    needs: [build, update_json] 
+    needs: [build, update_json]
 
     steps:
     - name: Download artifacts
