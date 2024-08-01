@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Remove when sharing with others.
-list(APPEND CMAKE_PREFIX_PATH "/home/artem/work/qt-creator/build-Debug/bin")
+list(APPEND CMAKE_PREFIX_PATH "/home/artem/work/qt-creator/build-Debug")
 
 project(Myplugintest)
 

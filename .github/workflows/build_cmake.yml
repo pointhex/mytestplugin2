@@ -264,6 +264,12 @@ jobs:
       with:
         path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
         name: ${{ env.PLUGIN_NAME}}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
+    
+    - name: Upload plugin json
+      uses: actions/upload-artifact@v4
+      with:
+        path: ./build/${{ env.PLUGIN_NAME }}1.json
+        name: ${{ env.PLUGIN_NAME }}1.json
 
   update_json:
     if: contains(github.ref, 'tags/v')
