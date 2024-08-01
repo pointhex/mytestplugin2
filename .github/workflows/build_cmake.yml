@@ -243,7 +243,7 @@ jobs:
         name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.artifact }}.json
 
   update_json:
-    # if: contains(github.ref, 'tags/v')
+    if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
     needs: build
 
@@ -258,12 +258,7 @@ jobs:
       with:
         # same for all platforms for now
         name: ${{ env.PLUGIN_NAME }}-Linux-x64.json
-    
-    - name: Check json loading
-      run: |
-        echo "Loading JSON file"
-        ls -ll ./        
-
+   
     - name: Store Release upload_url
       run: |
         RELEASE_HTML_URL=$(echo "${{github.event.repository.html_url}}/releases/download/v${{ needs.build.outputs.tag }}")

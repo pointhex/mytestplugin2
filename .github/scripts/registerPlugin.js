@@ -12,18 +12,14 @@ const updatePluginMetadata = (plugin, pluginQtcData, env) => {
   plugin.meta_data.Description = pluginQtcData.Description;
   plugin.meta_data.Url = pluginQtcData.Url;
 
-  plugin.meta_data.Dependencies.forEach(dependency => {
-    if (dependency.Name === 'Core') {
-      dependency.Version = env.QT_CREATOR_VERSION_INTERNAL.split('-')[0];
-    }
-  });
+  plugin.meta_data.Dependencies = new Map(pluginQtcData.Dependencies);
 };
 
 const updatePluginData = (plugin, env, pluginQtcData) => {
   const dictionary_platform = {
-    'Windows': `${env.HTML_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Windows-x64.7z`,
-    'Linux': `${env.HTML_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Linux-x64.7z`,
-    'macOS': `${env.HTML_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-macOS-x64.7z`
+    'Windows': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Windows-x64.7z`,
+    'Linux': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Linux-x64.7z`,
+    'macOS': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-macOS-x64.7z`
   };
 
   plugin.core_compat_version = env.QT_CREATOR_VERSION_INTERNAL;
@@ -48,25 +44,7 @@ const createNewPluginData = (env, platform, pluginQtcData) => {
       {
         "url": "",
         "size": 5000,
-        "meta_data": {
-          "Category": "Core",
-          "Version": "0.0.1",
-          "CompatVersion": "0.0.1",
-          "Copyright": "(C) MyCompany",
-          "Name": "Myplugintest",
-          "Url": "https://www.mycompany.com",
-          "Vendor": "MyCompany",
-          "Description": "Put a short description of your plugin here",
-          "License": [
-            "Put short license information here"
-          ],
-          "Dependencies": [
-            {
-              "Name": "Core",
-              "Version": "14.0.82"
-            }
-          ]
-        },
+        "meta_data": {},
         "dependencies": []
       }
     ]
@@ -147,7 +125,7 @@ const purgeCache = async (env) => {
 
 async function main() {
   const env = {
-    HTML_URL: process.env.HTML_URL || process.argv[2],
+    PLUGIN_DOWNLOAD_URL: process.env.PLUGIN_DOWNLOAD_URL || process.argv[2],
     PLUGIN_NAME: process.env.PLUGIN_NAME || process.argv[3],
     QT_CREATOR_VERSION: process.env.QT_CREATOR_VERSION || process.argv[4],
     QT_CREATOR_VERSION_INTERNAL: process.env.QT_CREATOR_VERSION_INTERNAL || process.argv[5],
@@ -155,17 +133,9 @@ async function main() {
     API_URL: process.env.API_URL || process.argv[7] || 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/'
   };
 
-  // Read the plugin JSON file
-  // const pluginFilePath = path.join(__dirname, '../..', `${env.PLUGIN_NAME}.json.in`);
-  // let pluginContent = fs.readFileSync(pluginFilePath, 'utf8');
-  // pluginContent = pluginContent.replace(/\${IDE_PLUGIN_DEPENDENCIES};?/g, '');
-  // pluginContent = pluginContent.replace(/,\s*}/g, '}');
-  // const pluginQtcData = JSON.parse(pluginContent);
-
   const pluginQtcData = require(`../../${env.PLUGIN_NAME}-Linux-x64.json`);
-  console.log('pluginQtcData:', pluginQtcData);
   const templateFileData = require('./plugin.json');
-  
+
   if (env.API_URL === '') {
     updateServerPluginJson(templateFileData, pluginQtcData, env);
     process.exit(0);
