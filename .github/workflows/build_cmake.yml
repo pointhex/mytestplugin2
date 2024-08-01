@@ -59,8 +59,8 @@ jobs:
     - name: Download Ninja and CMake
       uses: lukka/get-cmake@latest
       with:
-        cmake-version: ${{ env.CMAKE_VERSION }}
-        ninja-version: ${{ env.NINJA_VERSION }}
+        cmakeVersion: ${{ env.CMAKE_VERSION }}
+        ninjaVersion: ${{ env.NINJA_VERSION }}
 
     - name: Add CMake to PATH
       shell: cmake -P {0}
