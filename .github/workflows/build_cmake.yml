@@ -163,10 +163,12 @@ jobs:
           )
         endif()
 
+        #   run: node .github/scripts/downloadQtC.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
+
     - name: Download Qt Creator
       uses: Maddimax/install-qtc@v1
       with:
-        version: 14.0.82
+        version: ${{ env.QT_CREATOR_VERSION }}
         unzip-to: 'qtcreator'
 
     - name: Extract Qt Creator
