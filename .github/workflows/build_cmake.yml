@@ -190,8 +190,13 @@ jobs:
           )
         endif()
 
+        #   run: node .github/scripts/downloadQtC.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
+
     - name: Download Qt Creator
-      run: node .github/scripts/downloadQtC.js ${{ env.QT_CREATOR_VERSION }} ${{ matrix.config.platform }}
+      uses: Maddimax/install-qtc@v1
+      with:
+        version: '14.0.0'
+        unzip-to: 'qtcreator'
 
     - name: Extract Qt Creator
       id: qt_creator
@@ -199,13 +204,6 @@ jobs:
       run: |
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qtcreator" qtc_dir)
         file(APPEND "$ENV{GITHUB_OUTPUT}" "qtc_dir=${qtc_dir}")
-
-        file(MAKE_DIRECTORY qtcreator)
-
-        foreach(package qtcreator qtcreator_dev)
-          execute_process(COMMAND
-            ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
-        endforeach()
 
     - name: Build
       shell: cmake -P {0}
@@ -289,6 +287,12 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: '18'
+
+    - name: Download the JSON file
+      uses: actions/download-artifact@v4
+      with:
+        # same for all platforms for now
+        name: ${{ env.PLUGIN_NAME }}-Linux-x64.json 
 
     - name: Store Release upload_url
       run: |
