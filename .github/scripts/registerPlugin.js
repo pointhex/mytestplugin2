@@ -34,7 +34,7 @@ const updatePluginData = (plugin, env, pluginQtcData) => {
 
 const createNewPluginData = (env, platform, pluginQtcData) => {
   const pluginJson = {
-    "status": "published",
+    "status": "draft",
     "core_compat_version": "14.0.82",
     "core_version": "14.0.82",
     "host_os": platform,

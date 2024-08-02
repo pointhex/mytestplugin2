@@ -164,7 +164,7 @@ jobs:
         endif()
 
     - name: Download Qt Creator
-      uses: Maddimax/install-qtc@v1.1
+      uses: qt-creator/install-dev-package@v1.2
       with:
         version: ${{ env.QT_CREATOR_VERSION }}
         unzip-to: 'qtcreator'
