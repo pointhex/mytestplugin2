@@ -1,20 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Helper function to update plugin metadata
-const updatePluginMetadata = (plugin, pluginQtcData, env) => {
-  plugin.meta_data.Name = pluginQtcData.Name;
-  plugin.meta_data.Version = pluginQtcData.Version;
-  plugin.meta_data.CompatVersion = pluginQtcData.CompatVersion;
-  plugin.meta_data.Vendor = pluginQtcData.Vendor;
-  plugin.meta_data.Copyright = pluginQtcData.Copyright;
-  plugin.meta_data.License = [pluginQtcData.License];
-  plugin.meta_data.Description = pluginQtcData.Description;
-  plugin.meta_data.Url = pluginQtcData.Url;
-
-  plugin.meta_data.Dependencies = pluginQtcData.Dependencies;
-};
-
 const updatePluginData = (plugin, env, pluginQtcData) => {
   const dictionary_platform = {
     'Windows': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Windows-x64.7z`,
@@ -24,10 +10,11 @@ const updatePluginData = (plugin, env, pluginQtcData) => {
 
   plugin.core_compat_version = env.QT_CREATOR_VERSION_INTERNAL;
   plugin.core_version = env.QT_CREATOR_VERSION_INTERNAL;
+  plugin.status = "draft";
 
   plugin.plugins.forEach(pluginsEntry => {
     pluginsEntry.url = dictionary_platform[plugin.host_os];
-    updatePluginMetadata(pluginsEntry, pluginQtcData, env);
+    pluginsEntry.meta_data = pluginQtcData;
   });
   return plugin;
 };
@@ -60,6 +47,7 @@ const updateServerPluginJson = (endJsonData, pluginQtcData, env) => {
   endJsonData.vendor = pluginQtcData.Vendor;
   endJsonData.version = pluginQtcData.Version;
   endJsonData.copyright = pluginQtcData.Copyright;
+  endJsonData.status = "draft";
 
   endJsonData.version_history[0].version = pluginQtcData.Version;
 

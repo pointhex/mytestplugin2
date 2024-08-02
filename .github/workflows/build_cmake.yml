@@ -62,16 +62,6 @@ jobs:
         cmakeVersion: ${{ env.CMAKE_VERSION }}
         ninjaVersion: ${{ env.NINJA_VERSION }}
 
-    - name: Add CMake to PATH
-      shell: cmake -P {0}
-      run: |
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${cmake_dir}" cmake_dir)
-        set(path_separator ":")
-        if ("${{ runner.os }}" STREQUAL "Windows")
-          set(path_separator ";")
-        endif()
-        file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE}${path_separator}${cmake_dir}")
-
     - name: Install system libs
       shell: cmake -P {0}
       run: |
@@ -257,10 +247,6 @@ jobs:
         # same for all platforms for now
         name: ${{ env.PLUGIN_NAME }}-Linux-x64-json
         path: ./${{ env.PLUGIN_NAME }}-Linux-x64.json
-
-    - name: Check json file
-      run: |
-        ls -ll ./${{ env.PLUGIN_NAME }}-Linux-x64.json/
 
     - name: Store Release upload_url
       run: |
