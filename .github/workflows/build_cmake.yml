@@ -226,7 +226,7 @@ jobs:
 
     # The json is the same for all platforms, but we need to save one
     - name: Upload plugin json
-      if: os == 'ubuntu-latest'
+      if: matrix.config.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.PLUGIN_NAME }}-origin-json
