@@ -5,7 +5,7 @@ const updatePluginData = (plugin, env, pluginQtcData) => {
   const dictionary_platform = {
     'Windows': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Windows-x64.7z`,
     'Linux': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Linux-x64.7z`,
-    'macOS': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-macOS-x64.7z`
+    'macOS': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-macOS-universal.7z`
   };
 
   plugin.core_compat_version = env.QT_CREATOR_VERSION_INTERNAL;
@@ -22,15 +22,15 @@ const updatePluginData = (plugin, env, pluginQtcData) => {
 const createNewPluginData = (env, platform, pluginQtcData) => {
   const pluginJson = {
     "status": "draft",
-    "core_compat_version": "14.0.82",
-    "core_version": "14.0.82",
+    "core_compat_version": "<placeholder>",
+    "core_version": "<placeholder>",
     "host_os": platform,
-    "host_os_version": "10.0.0",
-    "host_os_architecture": "x86_64",
+    "host_os_version": "10.0.0", // TODO: pass the real data
+    "host_os_architecture": "x86_64", // TODO: pass the real data
     "plugins": [
       {
         "url": "",
-        "size": 5000,
+        "size": 5000, // TODO: check if it is needed, pass the real data
         "meta_data": {},
         "dependencies": []
       }
@@ -121,7 +121,7 @@ async function main() {
     API_URL: process.env.API_URL || process.argv[7] || 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/'
   };
 
-  const pluginQtcData = require(`../../${env.PLUGIN_NAME}-Linux-x64.json/${env.PLUGIN_NAME}.json`);
+  const pluginQtcData = require(`../../${env.PLUGIN_NAME}-origin/${env.PLUGIN_NAME}.json`);
   const templateFileData = require('./plugin.json');
 
   if (env.API_URL === '') {

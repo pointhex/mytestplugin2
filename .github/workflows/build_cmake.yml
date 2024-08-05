@@ -23,20 +23,17 @@ jobs:
         - {
             name: "Windows Latest MSVC", artifact: "Windows-x64",
             os: windows-latest,
-            platform: windows_x64,
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
         - {
             name: "Ubuntu Latest GCC", artifact: "Linux-x64",
             os: ubuntu-latest,
-            platform: linux_x64,
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "macOS Latest Clang", artifact: "macOS-universal",
             os: macos-latest,
-            platform: mac_x64,
             cc: "clang", cxx: "clang++"
           }
 
@@ -227,7 +224,7 @@ jobs:
     - name: Upload plugin json
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.artifact }}-json
+        name: ${{ env.PLUGIN_NAME }}-origin-json
         path: ./build/build/${{ env.PLUGIN_NAME }}.json
 
   update_json:
@@ -245,8 +242,8 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         # same for all platforms for now
-        name: ${{ env.PLUGIN_NAME }}-Linux-x64-json
-        path: ./${{ env.PLUGIN_NAME }}-Linux-x64.json
+        name: ${{ env.PLUGIN_NAME }}-origin-json
+        path: ./${{ env.PLUGIN_NAME }}-origin.json
 
     - name: Store Release upload_url
       run: |
