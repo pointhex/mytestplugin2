@@ -33,12 +33,12 @@ jobs:
             platform: linux_x64,
             cc: "gcc", cxx: "g++"
           }
-        - {
-            name: "macOS Latest Clang", artifact: "macOS-universal",
-            os: macos-latest,
-            platform: mac_x64,
-            cc: "clang", cxx: "clang++"
-          }
+        # - {
+        #     name: "macOS Latest Clang", artifact: "macOS-universal",
+        #     os: macos-latest,
+        #     platform: mac_x64,
+        #     cc: "clang", cxx: "clang++"
+        #   }
 
     steps:
     - uses: actions/checkout@v4
