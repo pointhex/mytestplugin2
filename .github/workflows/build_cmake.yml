@@ -232,6 +232,11 @@ jobs:
         name: ${{ env.PLUGIN_NAME }}-origin-json
         path: ./build/build/${{ env.PLUGIN_NAME }}.json
 
+    - name: Append artifacts and platforms to environment
+      run: |
+        echo "ARTIFACTS=${ARTIFACTS};${{ matrix.config.artifact }}" >> $GITHUB_ENV
+        echo "PLATFORMS=${PLATFORMS};${{ matrix.config.platform }}" >> $GITHUB_ENV
+
   update_json:
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
@@ -243,6 +248,11 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Display Artifacts and Platforms
+      run: |
+        echo "Final Artifact List: $ARTIFACTS"
+        echo "Final Platform List: $PLATFORMS"
+        
     - name: Download the JSON file
       uses: actions/download-artifact@v4
       with:
@@ -262,6 +272,7 @@ jobs:
     - name: Run the Node.js script to update JSON
       env:
         QT_TOKEN: ${{ secrets.TOKEN }}
+        MATRIX: ${{ jobs.build.strategy.matrix }}
       run: node .github/scripts/registerPlugin.js ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} ${{ env.QT_CREATOR_VERSION }} ${{ env.QT_CREATOR_VERSION_INTERNAL }} ${{ env.QT_TOKEN }}
 
     - name: Delete previous json artifacts
