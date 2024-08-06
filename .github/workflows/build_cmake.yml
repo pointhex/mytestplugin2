@@ -224,13 +224,37 @@ jobs:
         path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
         name: ${{ env.PLUGIN_NAME}}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
 
-    # Create a json file with the plugin information
+    # The json is the same for all platforms, but we need to save one
+    - name: Upload plugin json
+      if: matrix.config.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.PLUGIN_NAME }}-origin-json
+        path: ./build/build/${{ env.PLUGIN_NAME }}.json
+
+  update_json:
+    if: contains(github.ref, 'tags/v')
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Download the JSON file
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.PLUGIN_NAME }}-origin-json
+        path: ./${{ env.PLUGIN_NAME }}-origin
+
+
     - name: Check json file
       run: |
-        ls -ll ./build/build/
+        ls -ll ./${{ env.PLUGIN_NAME }}-origin/
 
     - name: Store Release upload_url
-      shell: bash
       run: |
         RELEASE_HTML_URL=$(echo "${{github.event.repository.html_url}}/releases/download/v${{ needs.build.outputs.tag }}")
         echo "RELEASE_HTML_URL=${RELEASE_HTML_URL}" >> $GITHUB_ENV
@@ -239,6 +263,11 @@ jobs:
       env:
         QT_TOKEN: ${{ secrets.TOKEN }}
       run: node .github/scripts/registerPlugin.js ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} ${{ env.QT_CREATOR_VERSION }} ${{ env.QT_CREATOR_VERSION_INTERNAL }} ${{ env.QT_TOKEN }}
+
+    - name: Delete previous json artifacts
+      uses: geekyeggo/delete-artifact@v5
+      with:
+        name: ${{ env.PLUGIN_NAME }}*-json
 
     - name: Upload the modified JSON file as an artifact
       uses: actions/upload-artifact@v4
@@ -249,7 +278,7 @@ jobs:
   release:
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [build, update_json]
 
     steps:
     - name: Download artifacts

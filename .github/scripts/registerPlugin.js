@@ -21,14 +21,14 @@ const updatePluginData = (plugin, env, pluginQtcData) => {
   return plugin;
 };
 
-const createNewPluginData = (env, os_type, platform, pluginQtcData) => {
+const createNewPluginData = (env, platform, pluginQtcData) => {
   const pluginJson = {
     "status": "draft",
     "core_compat_version": "<placeholder>",
     "core_version": "<placeholder>",
-    "host_os": os_type,
+    "host_os": platform,
     "host_os_version": "10.0.0", // TODO: pass the real data
-    "host_os_architecture": platform, // TODO: pass the real data
+    "host_os_architecture": "x86_64", // TODO: pass the real data
     "plugins": [
       {
         "url": "",
@@ -72,10 +72,8 @@ const updateServerPluginJson = (endJsonData, pluginQtcData, env) => {
   }
 
   if (!found)  {
-    for (const os_type of ['Windows', 'Linux', 'macOS']) {
-      for (const platform of ['x86_64', 'arm64']) {
-        endJsonData.plugin_sets.push(createNewPluginData(env, os_type, platform, pluginQtcData));
-      }
+    for (const platform of ['Windows', 'Linux', 'macOS']) {
+      endJsonData.plugin_sets.push(createNewPluginData(env, platform, pluginQtcData));
     }
   }
 
@@ -125,7 +123,7 @@ async function main() {
     API_URL: process.env.API_URL || process.argv[7] || 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/'
   };
 
-  const pluginQtcData = require(`../../build/build/${env.PLUGIN_NAME}.json`);
+  const pluginQtcData = require(`../../${env.PLUGIN_NAME}-origin/${env.PLUGIN_NAME}.json`);
   const templateFileData = require('./plugin.json');
 
   if (env.API_URL === '') {
