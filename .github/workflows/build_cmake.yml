@@ -17,6 +17,8 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     outputs:
         tag: ${{ steps.git.outputs.tag }}
+        artifact: ${{ env.ARTIFACTS }}
+        platform: ${{ env.PLATFORMS }}
     strategy:
       matrix:
         config:
@@ -250,8 +252,8 @@ jobs:
 
     - name: Display Artifacts and Platforms
       run: |
-        echo "Final Artifact List: $ARTIFACTS"
-        echo "Final Platform List: $PLATFORMS"
+        echo "Final Artifact List: ${{ needs.build.outputs.artifact }}"
+        echo "Final Platform List: ${{ needs.build.outputs.platform }}"
 
     - name: Download the JSON file
       uses: actions/download-artifact@v4
