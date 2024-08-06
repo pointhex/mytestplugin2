@@ -235,6 +235,7 @@ jobs:
         path: ./build/build/${{ env.PLUGIN_NAME }}.json
 
     - name: Append artifacts and platforms to environment
+      shell: bash
       run: |
         echo "ARTIFACTS=${ARTIFACTS};${{ matrix.config.artifact }}" >> $GITHUB_ENV
         echo "PLATFORMS=${PLATFORMS};${{ matrix.config.platform }}" >> $GITHUB_ENV
