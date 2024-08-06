@@ -10,7 +10,9 @@ const updatePluginData = (plugin, env, pluginQtcData) => {
 
   plugin.core_compat_version = env.QT_CREATOR_VERSION_INTERNAL;
   plugin.core_version = env.QT_CREATOR_VERSION_INTERNAL;
-  plugin.status = "draft";
+  plugin.host_os_version = "0";
+
+  plugin.status = "published";
 
   plugin.plugins.forEach(pluginsEntry => {
     pluginsEntry.url = dictionary_platform[plugin.host_os];
@@ -47,7 +49,7 @@ const updateServerPluginJson = (endJsonData, pluginQtcData, env) => {
   endJsonData.vendor = pluginQtcData.Vendor;
   endJsonData.version = pluginQtcData.Version;
   endJsonData.copyright = pluginQtcData.Copyright;
-  endJsonData.status = "draft";
+  endJsonData.status = "published";
 
   endJsonData.version_history[0].version = pluginQtcData.Version;
 
