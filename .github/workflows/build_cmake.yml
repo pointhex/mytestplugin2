@@ -256,6 +256,11 @@ jobs:
         echo "Final Artifact List: ${{ needs.build.outputs.artifact }}"
         echo "Final Platform List: ${{ needs.build.outputs.platform }}"
 
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: release-with-dirs
+
     - name: Download the JSON file
       uses: actions/download-artifact@v4
       with:
@@ -266,6 +271,13 @@ jobs:
     - name: Check json file
       run: |
         ls -ll ./${{ env.PLUGIN_NAME }}-origin/
+        ls -ll ./release-with-dirs/
+        ARTIFACTS=$(ls -1 ./release-with-dirs | tr '\n' ';' | sed 's/;$//')
+        echo "ARTIFACTS=$ARTIFACTS" >> $GITHUB_ENV
+
+    - name: Display Artifacts Environment Variable
+      run: |
+        echo "Artifacts: $ARTIFACTS"
 
     - name: Store Release upload_url
       run: |
