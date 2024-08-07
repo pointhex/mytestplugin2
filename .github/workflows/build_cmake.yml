@@ -234,12 +234,6 @@ jobs:
         name: ${{ env.PLUGIN_NAME }}-origin-json
         path: ./build/build/${{ env.PLUGIN_NAME }}.json
 
-    - name: Append artifacts and platforms to environment
-      shell: bash
-      run: |
-        echo "ARTIFACTS=${ARTIFACTS};${{ matrix.config.artifact }}" >> $GITHUB_ENV
-        echo "PLATFORMS=${PLATFORMS};${{ matrix.config.platform }}" >> $GITHUB_ENV
-
   update_json:
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
@@ -251,15 +245,11 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Display Artifacts and Platforms
-      run: |
-        echo "Final Artifact List: ${{ needs.build.outputs.artifact }}"
-        echo "Final Platform List: ${{ needs.build.outputs.platform }}"
-
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
         path: release-with-dirs
+        pattern: *.7z
 
     - name: Download the JSON file
       uses: actions/download-artifact@v4
