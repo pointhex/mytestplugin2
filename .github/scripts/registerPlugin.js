@@ -124,7 +124,8 @@ async function main() {
     ARTIFACTS: process.env.ARTIFACTS || process.argv[8],
     PLATFORMS: []
   };
-  
+
+  console.log("ARTIFACTS", env.ARTIFACTS);
   env.ARTIFACTS = env.ARTIFACTS.split(';');
 
   env.ARTIFACTS.forEach(artifact => {
@@ -137,12 +138,13 @@ async function main() {
     }
   });
 
-  console.log(`Artifact: ${artifact}, Platform: ${platform}`);
+  console.log(`Artifact: ${env.ARTIFACTS}, Platform: ${env.PLATFORMS}`);
 
   const pluginQtcData = require(`../../${env.PLUGIN_NAME}-origin/${env.PLUGIN_NAME}.json`);
   const templateFileData = require('./plugin.json');
 
   if (env.API_URL === '') {
+    console.log('API_URL is not set. Skipping the server update');
     updateServerPluginJson(templateFileData, pluginQtcData, env);
     process.exit(0);
   }
