@@ -120,7 +120,7 @@ async function main() {
     QT_CREATOR_VERSION: process.env.QT_CREATOR_VERSION || process.argv[4],
     QT_CREATOR_VERSION_INTERNAL: process.env.QT_CREATOR_VERSION_INTERNAL || process.argv[5],
     TOKEN: process.env.TOKEN || process.argv[6],
-    API_URL: process.env.API_URL || process.argv[7] || 'https://qtc-ext-service-admin-staging-1c7a99141c20.herokuapp.com/'
+    API_URL: process.env.API_URL || process.argv[7] || ''
   };
 
   console.log('Env:', process.env.ARTIFACTS);

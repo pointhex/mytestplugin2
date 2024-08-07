@@ -249,7 +249,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: release-with-dirs
-        pattern: *.7z
+        pattern: '*.7z'
 
     - name: Download the JSON file
       uses: actions/download-artifact@v4
@@ -277,7 +277,12 @@ jobs:
     - name: Run the Node.js script to update JSON
       env:
         QT_TOKEN: ${{ secrets.TOKEN }}
-      run: node .github/scripts/registerPlugin.js ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} ${{ env.QT_CREATOR_VERSION }} ${{ env.QT_CREATOR_VERSION_INTERNAL }} ${{ env.QT_TOKEN }}
+        API_URL: ${{ secrets.API_URL }}
+      run: |
+        node .github/scripts/registerPlugin.js \
+        ${{ env.RELEASE_HTML_URL }} ${{ env.PLUGIN_NAME }} \
+        ${{ env.QT_CREATOR_VERSION }} ${{ env.QT_CREATOR_VERSION_INTERNAL }} \
+        ${{ env.QT_TOKEN }} ${{ env.API_URL }}
 
     - name: Delete previous json artifacts
       uses: geekyeggo/delete-artifact@v5
