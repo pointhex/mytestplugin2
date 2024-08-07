@@ -121,22 +121,22 @@ async function main() {
     QT_CREATOR_VERSION_INTERNAL: process.env.QT_CREATOR_VERSION_INTERNAL || process.argv[5],
     TOKEN: process.env.TOKEN || process.argv[6],
     API_URL: process.env.API_URL || process.argv[7] || '',
-    ARTIFACTS: process.env.ARTIFACTS || process.argv[8]
+    ARTIFACTS: process.env.ARTIFACTS || process.argv[8],
+    PLATFORMS: []
   };
   
   env.ARTIFACTS = env.ARTIFACTS.split(';');
-  const PLATFORMS = [];
 
-  artifacts.forEach(artifact => {
+  env.ARTIFACTS.forEach(artifact => {
     artifact = artifact.trim();
     if (artifact) {
       artifact = artifact.replace('.7z', '');
       const parts = artifact.split('-');
       const platform = parts[parts.length - 1];
-      PLATFORMS.push(platform);
+      env.PLATFORMS.push(platform);
     }
   });
-  
+
   console.log(`Artifact: ${artifact}, Platform: ${platform}`);
 
   const pluginQtcData = require(`../../${env.PLUGIN_NAME}-origin/${env.PLUGIN_NAME}.json`);
