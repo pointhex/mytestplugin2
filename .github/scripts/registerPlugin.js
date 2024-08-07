@@ -3,9 +3,9 @@ const path = require('path');
 
 const updatePluginData = (plugin, env, pluginQtcData) => {
   const dictionary_platform = {
-    'Windows': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Windows-x64.7z`,
-    'Linux': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-Linux-x64.7z`,
-    'macOS': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-macOS-universal.7z`
+    'Windows': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-windows_x64.7z`,
+    'Linux': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-linux_x64.7z`,
+    'macOS': `${env.PLUGIN_DOWNLOAD_URL}/${env.PLUGIN_NAME}-${env.QT_CREATOR_VERSION}-mac_x64.7z`
   };
 
   plugin.core_compat_version = env.QT_CREATOR_VERSION_INTERNAL;
@@ -120,10 +120,24 @@ async function main() {
     QT_CREATOR_VERSION: process.env.QT_CREATOR_VERSION || process.argv[4],
     QT_CREATOR_VERSION_INTERNAL: process.env.QT_CREATOR_VERSION_INTERNAL || process.argv[5],
     TOKEN: process.env.TOKEN || process.argv[6],
-    API_URL: process.env.API_URL || process.argv[7] || ''
+    API_URL: process.env.API_URL || process.argv[7] || '',
+    ARTIFACTS: process.env.ARTIFACTS || process.argv[8]
   };
+  
+  env.ARTIFACTS = env.ARTIFACTS.split(';');
+  const PLATFORMS = [];
 
-  console.log('Env:', process.env.ARTIFACTS);
+  artifacts.forEach(artifact => {
+    artifact = artifact.trim();
+    if (artifact) {
+      artifact = artifact.replace('.7z', '');
+      const parts = artifact.split('-');
+      const platform = parts[parts.length - 1];
+      PLATFORMS.push(platform);
+    }
+  });
+  
+  console.log(`Artifact: ${artifact}, Platform: ${platform}`);
 
   const pluginQtcData = require(`../../${env.PLUGIN_NAME}-origin/${env.PLUGIN_NAME}.json`);
   const templateFileData = require('./plugin.json');
